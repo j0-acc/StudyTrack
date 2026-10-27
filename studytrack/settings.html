@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account Settings — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/settings.css">
+</head>
+<body>
+  <div class="app">
+    <header id="nav"></header>
+
+    <main class="settings-layout">
+      <aside class="side-menu" aria-label="Settings menu">
+        <a href="#account" class="side-link" id="tab-account">Account</a>
+        <a href="#password" class="side-link" id="tab-password">Change Password</a>
+        <button type="button" class="side-btn" id="signout-btn">Sign Out</button>
+        <button type="button" class="side-btn danger" id="delete-open">Delete Account</button>
+      </aside>
+
+      <div class="settings-main">
+        <!-- Account -->
+        <section id="panel-account">
+          <h1>Account Settings</h1>
+          <div class="card settings-card">
+            <h2>Public Information</h2>
+            <div class="profile-row">
+              <div class="avatar-lg" id="avatar-big" aria-hidden="true"></div>
+              <div class="avatar-actions">
+                <button type="button" class="link-blue" id="photo-btn">Change photo</button>
+                <span class="hint">JPG, PNG or WebP</span>
+                <input type="file" id="photo-input" accept="image/png,image/jpeg,image/webp" hidden>
+              </div>
+            </div>
+            <p class="auth-message" id="photo-message" role="status" aria-live="polite"></p>
+
+            <form id="profile-form" novalidate>
+              <div class="two">
+                <div class="field">
+                  <label for="full-name">Full name</label>
+                  <input id="full-name" type="text" maxlength="120" autocomplete="name">
+                </div>
+                <div class="field">
+                  <label for="email">Email address</label>
+                  <input id="email" type="email" readonly aria-describedby="email-hint">
+                </div>
+              </div>
+              <div class="two">
+                <div class="field">
+                  <label for="school">School / University</label>
+                  <input id="school" type="text" maxlength="150" autocomplete="organization">
+                </div>
+                <div class="field">
+                  <label for="major">Degree / Major</label>
+                  <input id="major" type="text" maxlength="150">
+                </div>
+              </div>
+              <p class="hint" id="email-hint">Your email can't be changed here yet.</p>
+              <button type="submit" class="btn btn-primary" id="profile-save">Save changes</button>
+              <p class="auth-message" id="profile-message" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </section>
+
+        <!-- Change password -->
+        <section id="panel-password" hidden>
+          <h1>Change Password</h1>
+          <div class="card settings-card">
+            <div class="identity">
+              <div class="avatar-lg" id="avatar-small" aria-hidden="true"></div>
+              <div><strong id="id-name"></strong><span id="id-email"></span></div>
+            </div>
+            <form id="password-form" novalidate>
+              <div class="field">
+                <label for="current-pw">Current password</label>
+                <div class="input-wrap">
+                  <input id="current-pw" type="password" autocomplete="current-password">
+                  <button type="button" class="toggle-pw" data-target="current-pw" aria-label="Show password">Show</button>
+                </div>
+              </div>
+              <div class="field">
+                <label for="new-pw">New password</label>
+                <div class="input-wrap">
+                  <input id="new-pw" type="password" autocomplete="new-password">
+                  <button type="button" class="toggle-pw" data-target="new-pw" aria-label="Show password">Show</button>
+                </div>
+              </div>
+              <div class="field">
+                <label for="confirm-pw">Confirm new password</label>
+                <div class="input-wrap">
+                  <input id="confirm-pw" type="password" autocomplete="new-password">
+                  <button type="button" class="toggle-pw" data-target="confirm-pw" aria-label="Show password">Show</button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" id="password-save">Update password</button>
+              <p class="auth-message" id="password-message" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="modal" id="delete-modal" aria-labelledby="delete-title">
+    <div class="modal-head">
+      <h2 id="delete-title">Delete your account?</h2>
+      <button type="button" class="modal-close" id="delete-close" aria-label="Close">&times;</button>
+    </div>
+    <p class="pick-note" style="margin-bottom:0.5rem">This permanently deletes:</p>
+    <ul class="warn-list">
+      <li>Your profile and photo</li>
+      <li>All your decks, cards, notes, and quizzes</li>
+      <li>Your streak, study time, goals, and statistics</li>
+    </ul>
+    <p class="pick-note"><strong>This cannot be undone.</strong></p>
+    <div class="field">
+      <label for="delete-confirm">Type DELETE to confirm</label>
+      <input id="delete-confirm" type="text" autocomplete="off">
+    </div>
+    <p class="auth-message" id="delete-message" role="status" aria-live="polite"></p>
+    <button type="button" class="btn btn-danger" id="delete-go" disabled>Delete my account</button>
+  </dialog>
+
+  <script type="module" src="js/settings.js"></script>
+</body>
+</html>

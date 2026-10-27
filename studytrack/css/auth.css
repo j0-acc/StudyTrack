@@ -1,0 +1,53 @@
+/* ===== Sign Up / Log In pages ===== */
+.auth-page { min-height: 100vh; display: grid; place-items: center; padding: 1.5rem; }
+
+.auth-card {
+  width: min(880px, 100%); display: grid; grid-template-columns: 1fr 1.15fr;
+  background: var(--surface); border-radius: var(--radius-lg);
+  box-shadow: 0 10px 40px rgba(180, 110, 20, 0.15); overflow: hidden;
+}
+
+.auth-side {
+  background: linear-gradient(160deg, var(--orange), var(--orange-deep));
+  color: #fff; padding: 2.5rem 2rem; display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start; gap: 0.75rem;
+}
+.auth-side img { width: 120px; height: auto; margin: 0 auto 1rem; }
+.auth-side h2 { margin: 0; font-size: 1.25rem; }
+.auth-side p { margin: 0; font-size: var(--fs-small); opacity: 0.9; max-width: 28ch; }
+
+.auth-form { padding: 2.5rem 2.25rem; display: flex; flex-direction: column; justify-content: center; }
+.auth-form h1 { margin: 0 0 0.25rem; font-size: 1.5rem; }
+.auth-sub { margin: 0 0 1.5rem; color: var(--ink-soft); font-size: var(--fs-small); }
+
+.field { margin-bottom: 1rem; }
+.field label { display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.35rem; }
+.input-wrap { position: relative; }
+.field input {
+  width: 100%; padding: 0.8rem 1rem; border: 1.5px solid var(--line);
+  border-radius: var(--radius-md); font: inherit; font-size: var(--fs-small);
+  background: #fffdf9; color: var(--ink);
+}
+.field input:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255, 157, 46, 0.2); }
+.toggle-pw {
+  position: absolute; right: 0.6rem; top: 50%; transform: translateY(-50%);
+  background: none; border: 0; cursor: pointer; color: var(--ink-soft);
+  font: 600 0.75rem var(--font); padding: 0.4rem;
+}
+
+.auth-form .btn-primary { width: 100%; justify-content: center; padding: 0.9rem; margin-top: 0.5rem; font-size: 0.95rem; }
+.auth-form .btn-primary:disabled { opacity: 0.6; cursor: wait; transform: none; box-shadow: none; }
+
+.auth-message { min-height: 1.25rem; font-size: var(--fs-small); margin: 0.75rem 0 0; }
+.auth-message.error { color: #d92d20; }
+.auth-message.ok { color: #054922; }
+
+.auth-switch { text-align: center; font-size: var(--fs-small); color: var(--ink-soft); margin: 1rem 0 0; }
+.auth-switch a { color: var(--blue); font-weight: 600; }
+
+@media (max-width: 700px) {
+  .auth-card { grid-template-columns: 1fr; }
+  .auth-side { padding: 1.5rem; align-items: center; text-align: center; }
+  .auth-side img { width: 72px; margin-bottom: 0; }
+  .auth-side p { display: none; }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decks — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+</head>
+<body>
+  <div class="app">
+    <header id="nav"></header>
+
+    <main>
+      <div class="page-head">
+        <h1>Decks</h1>
+        <p>Organize your study material into decks.</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Filter decks">
+          <button type="button" class="filter" data-filter="all" aria-pressed="true">All Subjects</button>
+          <button type="button" class="filter" data-filter="progress" aria-pressed="false">In Progress</button>
+          <button type="button" class="filter" data-filter="mastered" aria-pressed="false">Mastered</button>
+        </div>
+        <input type="search" class="search" id="search" placeholder="Search decks..." aria-label="Search decks">
+      </div>
+
+      <div class="deck-grid" id="deck-grid"></div>
+    </main>
+  </div>
+
+  <dialog class="modal" id="deck-modal" aria-labelledby="modal-title">
+    <div class="modal-head">
+      <h2 id="modal-title">Add Deck</h2>
+      <button type="button" class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    </div>
+    <form id="deck-form" novalidate>
+      <div class="field">
+        <label for="deck-title">Deck name</label>
+        <input id="deck-title" type="text" maxlength="60" placeholder="e.g. Biology 101" required>
+      </div>
+      <div class="field">
+        <label for="deck-desc">Description</label>
+        <textarea id="deck-desc" maxlength="200" placeholder="What is this deck about?"></textarea>
+      </div>
+      <div class="field">
+        <label id="color-label">Color</label>
+        <div class="swatches" id="swatches" role="radiogroup" aria-labelledby="color-label"></div>
+      </div>
+      <button type="submit" class="btn btn-primary" id="deck-submit">Create deck</button>
+      <p class="auth-message" id="deck-message" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/decks.js"></script>
+</body>
+</html>

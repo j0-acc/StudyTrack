@@ -1,0 +1,54 @@
+/* ===== Deck detail page ===== */
+.deck-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+.back {
+  width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.7);
+  display: grid; place-items: center; font-size: 1.3rem; color: var(--ink-soft);
+}
+.back:hover { background: #fff; }
+.deck-chip { border-radius: var(--radius-lg); padding: 0.5rem 1.1rem; font-weight: 700; font-size: 1.1rem; }
+.btn-edit { padding: 0.5rem 1rem; }
+
+.deck-description { margin: 0 0 0.25rem; color: var(--ink-soft); font-size: var(--fs-small); max-width: 70ch; }
+.muted-small { margin: 0 0 1.5rem; color: var(--ink-soft); font-size: 0.78rem; }
+
+.mode-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-bottom: 2rem; }
+.mode {
+  display: block; border-radius: var(--radius-lg); padding: 1.25rem 1.5rem;
+  background: linear-gradient(180deg, #ffe3b8, #fff1dc); border: 1px solid #f7d9a8; box-shadow: var(--shadow);
+}
+a.mode:hover { transform: translateY(-2px); }
+.mode svg { width: 26px; height: 26px; stroke: var(--ink); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 0.5rem; }
+.mode h2 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+.mode p { margin: 0 0 1rem; font-size: 0.82rem; color: #7a6540; }
+.mode .mode-meta { font-size: 0.8rem; font-weight: 600; color: #7a6540; }
+.mode.disabled { opacity: 0.55; cursor: not-allowed; }
+
+.section-label { font-size: 0.95rem; margin: 0 0 0.75rem; color: var(--ink-soft); }
+
+.card-list { list-style: none; margin: 0 0 2rem; padding: 0; display: grid; gap: 0.6rem; }
+.card-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  background: var(--surface); border-radius: var(--radius-pill); padding: 0.75rem 1.4rem; box-shadow: var(--shadow);
+}
+.card-item .num { color: var(--ink-soft); font-size: 0.8rem; margin-right: 0.6rem; }
+.card-item strong { font-size: var(--fs-small); }
+.card-item .back-text { display: block; font-size: 0.78rem; color: var(--ink-soft); margin-left: 1.5rem; }
+.card-del { background: none; border: 0; font-size: 1.2rem; line-height: 1; color: var(--ink-soft); cursor: pointer; padding: 0.3rem 0.5rem; border-radius: 8px; }
+.card-del:hover { background: #fde8e6; color: #d92d20; }
+
+.add-card { max-width: 760px; }
+.add-card h2 { font-size: 1.05rem; margin: 0 0 1rem; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.add-card textarea {
+  width: 100%; min-height: 110px; padding: 0.8rem 1rem; border: 1.5px solid var(--line); border-radius: var(--radius-md);
+  font: inherit; font-size: var(--fs-small); background: #fffdf9; color: var(--ink); resize: vertical;
+}
+.add-card textarea:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255, 157, 46, 0.2); }
+.add-card .btn-primary { margin-top: 0.5rem; }
+.add-card .btn-primary:disabled { opacity: 0.6; cursor: wait; }
+
+.btn-danger-text { background: none; border: 0; color: #d92d20; font: 600 var(--fs-small) var(--font); cursor: pointer; margin-top: 0.75rem; width: 100%; padding: 0.5rem; }
+
+@media (max-width: 700px) {
+  .mode-grid, .two-col { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,61 @@
+/* ===== Statistics page ===== */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
+.stat { display: flex; align-items: center; gap: 0.9rem; background: var(--surface); border-radius: var(--radius-md); padding: 1rem 1.1rem; box-shadow: var(--shadow); }
+.stat-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex-shrink: 0; }
+.stat-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.stat small { display: block; color: var(--ink-soft); font-size: 0.72rem; }
+.stat strong { font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+
+.card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.card-head h2 { margin: 0; font-size: 1rem; }
+.card-head span { font-size: 0.78rem; color: var(--ink-soft); }
+.stack { display: grid; gap: 1.25rem; }
+
+/* daily goal */
+.goal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.75rem; }
+.goal-line { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; margin: 0 0 0.5rem; font-size: var(--fs-small); font-weight: 600; }
+.bar.done > span { background: #2fbf71; }
+.badge-ok { background: #e3f6ea; color: #1f9d55; border-radius: var(--radius-pill); padding: 0.2rem 0.7rem; font-size: 0.72rem; font-weight: 700; }
+.goal-empty { margin: 0 0 0.5rem; color: var(--ink-soft); font-size: var(--fs-small); }
+.goal-form { display: flex; gap: 0.6rem; align-items: flex-end; flex-wrap: wrap; margin-top: 1.1rem; }
+.goal-form .field { margin: 0; }
+.goal-form input {
+  width: 120px; padding: 0.7rem 0.9rem; border: 1.5px solid var(--line); border-radius: var(--radius-md);
+  font: inherit; font-size: var(--fs-small); background: #fffdf9; color: var(--ink);
+}
+.goal-form input:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255, 157, 46, 0.2); }
+.goal-form .btn { padding: 0.7rem 1.1rem; }
+.link-btn { background: none; border: 0; color: #d92d20; font: 600 0.78rem var(--font); cursor: pointer; padding: 0.5rem 0.25rem; }
+
+.days { display: grid; grid-template-columns: repeat(auto-fill, minmax(28px, 1fr)); gap: 4px; margin-bottom: 0.75rem; }
+.day-sq { aspect-ratio: 1; border-radius: 6px; background: #f0e9db; font-size: 0.65rem; display: grid; place-items: center; color: var(--ink-soft); }
+.day-sq.met { background: #2fbf71; color: #fff; font-weight: 700; }
+.day-sq.missed { background: #ffd9a8; color: #8a5a12; }
+.day-sq.studied { background: #ffe9c6; color: #8a5a12; }
+.day-sq.future { opacity: 0.4; }
+.day-sq.today { outline: 2px solid var(--blue); outline-offset: -2px; }
+.legend { display: flex; gap: 0.9rem; flex-wrap: wrap; font-size: 0.72rem; color: var(--ink-soft); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 0.3rem; vertical-align: -1px; }
+
+/* weekly chart */
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.75rem; height: 210px; align-items: end; }
+.col { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; gap: 0.35rem; }
+.bar-v { width: 100%; max-width: 56px; background: var(--orange); border-radius: 10px 10px 4px 4px; }
+.col.today .bar-v { background: var(--orange-deep); }
+.col.empty-day .bar-v { background: #f0e9db; }
+.col .val { font-size: 0.68rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.col .lbl { font-size: 0.75rem; color: var(--ink-soft); }
+.col.today .lbl { color: var(--ink); font-weight: 700; }
+
+/* performance by subject */
+.perf-row { display: grid; grid-template-columns: 150px 1fr 48px; gap: 1rem; align-items: center; margin: 0.8rem 0; font-size: var(--fs-small); }
+.perf-row .track { height: 10px; border-radius: var(--radius-pill); background: #f3ece0; overflow: hidden; }
+.perf-row .track > span { display: block; height: 100%; border-radius: inherit; }
+.perf-row .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.perf-row .pct { text-align: right; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 800px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .goal-grid { grid-template-columns: 1fr; }
+  .perf-row { grid-template-columns: 100px 1fr 44px; }
+}

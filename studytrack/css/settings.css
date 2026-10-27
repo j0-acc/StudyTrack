@@ -1,0 +1,48 @@
+/* ===== Account Settings ===== */
+.settings-layout { display: grid; grid-template-columns: 220px 1fr; gap: 1.75rem; align-items: start; }
+.side-menu { background: var(--surface); border-radius: var(--radius-md); padding: 0.9rem; box-shadow: var(--shadow); display: grid; gap: 0.5rem; }
+.side-link {
+  display: block; padding: 0.65rem 0.9rem; border-radius: 12px; font-size: var(--fs-small); color: var(--ink-soft); font-weight: 500;
+}
+.side-link:hover { background: #fff6e8; }
+.side-link[aria-current="page"] { background: #ffefd6; color: var(--ink); font-weight: 700; }
+.side-btn {
+  width: 100%; text-align: center; padding: 0.65rem 0.9rem; border-radius: var(--radius-pill); font: 600 var(--fs-small) var(--font);
+  cursor: pointer; border: 1.5px solid var(--line); background: var(--surface); color: #d92d20; margin-top: 0.25rem;
+}
+.side-btn:hover { background: #fdf0ee; }
+.side-btn.danger { background: #e04b3d; border-color: #e04b3d; color: #fff; }
+.side-btn.danger:hover { background: #c93d30; }
+
+.settings-main h1 { margin: 0 0 1rem; font-size: 1.6rem; letter-spacing: -0.01em; }
+.settings-card { max-width: 760px; padding: 1.5rem 1.75rem; }
+.settings-card h2 { margin: 0 0 1.25rem; font-size: 1rem; }
+
+.profile-row { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.avatar-lg {
+  width: 88px; height: 88px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; overflow: hidden;
+  background: linear-gradient(135deg, #ff9d2e, #ff6f91 55%, #5aa9ff); color: #fff; font-size: 2.2rem; font-weight: 700;
+}
+.avatar-actions { display: grid; gap: 0.25rem; }
+.link-blue { background: none; border: 0; padding: 0; color: var(--blue); font: 600 var(--fs-small) var(--font); cursor: pointer; text-align: left; }
+.link-blue:disabled { opacity: 0.5; cursor: wait; }
+.hint { font-size: 0.72rem; color: var(--ink-soft); }
+
+.settings-card .field input[readonly] { background: #f6f1e7; color: var(--ink-soft); }
+.settings-card .two { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.settings-card .btn-primary { margin-top: 0.5rem; }
+.settings-card .btn-primary:disabled { opacity: 0.6; cursor: wait; }
+.identity { display: flex; align-items: center; gap: 1rem; padding-bottom: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
+.identity .avatar-lg { width: 64px; height: 64px; font-size: 1.6rem; }
+.identity strong { display: block; font-size: var(--fs-small); }
+.identity span { font-size: 0.78rem; color: var(--ink-soft); }
+
+/* delete dialog */
+.warn-list { margin: 0 0 1rem; padding-left: 1.2rem; font-size: 0.82rem; color: var(--ink-soft); }
+.btn-danger { background: #e04b3d; border-color: #e04b3d; color: #fff; width: 100%; justify-content: center; padding: 0.85rem; margin-top: 0.5rem; }
+.btn-danger:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+@media (max-width: 760px) {
+  .settings-layout { grid-template-columns: 1fr; }
+  .settings-card .two { grid-template-columns: 1fr; }
+}

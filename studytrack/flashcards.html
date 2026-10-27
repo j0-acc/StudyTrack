@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flashcard Mode — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/deck.css">
+  <link rel="stylesheet" href="css/flashcards.css">
+</head>
+<body>
+  <div class="app">
+    <header id="nav"></header>
+
+    <main>
+      <div class="empty" id="missing" hidden>
+        This deck has no cards to study yet. <a href="decks.html">Back to your decks</a>
+      </div>
+
+      <div id="study-area" hidden>
+        <div class="study-top">
+          <a href="decks.html" class="back" id="back-link" aria-label="Back to deck">&#8249;</a>
+          <span class="deck-chip" id="deck-chip"></span>
+        </div>
+
+        <section class="study" aria-label="Flashcards">
+          <h1>Flashcard Mode</h1>
+          <p class="progress-text" id="progress-text" aria-live="polite"></p>
+          <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+          <div id="card-area">
+            <div class="flip" id="flip" role="button" tabindex="0" aria-label="Flip card">
+              <div class="flip-inner">
+                <div class="face front" id="face-front">
+                  <div class="face-content">
+                    <span class="face-label">Question</span>
+                    <span class="face-text" id="front-text"></span>
+                    <span class="face-hint">Click or press Space to flip</span>
+                  </div>
+                </div>
+                <div class="face back" id="face-back">
+                  <div class="face-content">
+                    <span class="face-label">Answer</span>
+                    <span class="face-text" id="back-text"></span>
+                    <span class="face-hint">Click or press Space to flip</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="show-answer" id="show-answer">Show answer</button>
+            <div class="nav-buttons">
+              <button type="button" class="btn" id="prev" aria-label="Previous card">&#8249; Prev</button>
+              <button type="button" class="btn" id="next" aria-label="Next card">Next &#8250;</button>
+            </div>
+          </div>
+
+          <div class="done" id="done" hidden>
+            <h2>You've completed this deck!</h2>
+            <p id="done-summary"></p>
+            <p id="done-status" role="status" aria-live="polite"></p>
+            <div class="actions">
+              <button type="button" class="btn btn-primary" id="restart">Start over</button>
+              <a class="btn btn-grey" id="back-deck" href="decks.html">Back to Deck</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/flashcards.js"></script>
+</body>
+</html>

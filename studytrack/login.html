@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <main class="auth-page">
+    <div class="auth-card">
+
+      <aside class="auth-side">
+        <img src="assets/hero.png" alt="">
+        <h2>Study smarter. Remember more.</h2>
+        <p>Your AI study companion — flashcards, quizzes, and notes in one place.</p>
+      </aside>
+
+      <section class="auth-form">
+        <h1>Welcome back</h1>
+        <p class="auth-sub">Log in to continue your study streak.</p>
+
+        <form id="login-form" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <input id="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+              <button type="button" class="toggle-pw" data-target="password" aria-label="Show password">Show</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="submit-btn">Log in</button>
+          <p class="auth-message" id="message" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="auth-switch">Don't have an account? <a href="signup.html">Sign up</a></p>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

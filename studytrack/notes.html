@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notes — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/notes.css">
+</head>
+<body>
+  <div class="app">
+    <header id="nav"></header>
+
+    <main>
+      <!-- list of notes -->
+      <div id="list-view">
+        <div class="notes-head">
+          <div class="page-head">
+            <h1>Notes</h1>
+            <p>Save your thoughts, key concepts, and study notes in one place.</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="new-note">+ New Note</button>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <input type="search" class="search" id="search" placeholder="Search notes..." aria-label="Search notes">
+            <select class="cat-select" id="cat-filter" aria-label="Filter by category"></select>
+          </div>
+        </div>
+
+        <h2 class="section-title" id="all-title">All Notes</h2>
+        <div class="notes-grid" id="notes-grid"></div>
+      </div>
+
+      <!-- add / edit a note -->
+      <div id="editor-view" hidden>
+        <button type="button" class="back-notes" id="back-notes">&#8592; Back to notes</button>
+        <section class="card editor-panel" aria-labelledby="editor-title">
+          <h2 id="editor-title">Add Note</h2>
+
+          <div class="field">
+            <label for="note-title">Title</label>
+            <input id="note-title" type="text" maxlength="120" placeholder="e.g. Software Development Life Cycle (SDLC)">
+          </div>
+          <div class="two-col-fields">
+            <div class="field">
+              <label for="note-category">Category</label>
+              <select id="note-category"></select>
+            </div>
+            <div class="field">
+              <label for="note-tags">Tags</label>
+              <input id="note-tags" type="text" maxlength="200" placeholder="e.g. exam, chapter-4">
+            </div>
+          </div>
+
+          <div role="toolbar" aria-label="Text formatting" class="fmt-bar" id="fmt-bar">
+            <button type="button" data-cmd="bold" aria-label="Bold" aria-pressed="false"><b>B</b></button>
+            <button type="button" data-cmd="italic" aria-label="Italic" aria-pressed="false"><i>I</i></button>
+            <button type="button" data-cmd="underline" aria-label="Underline" aria-pressed="false"><u>U</u></button>
+            <button type="button" data-cmd="insertUnorderedList" aria-label="Bulleted list" aria-pressed="false">&#8226; List</button>
+            <button type="button" data-cmd="insertOrderedList" aria-label="Numbered list" aria-pressed="false">1. List</button>
+            <button type="button" data-cmd="h2" aria-label="Heading" aria-pressed="false">H2</button>
+          </div>
+          <div class="rte" id="editor" contenteditable="true" role="textbox" aria-multiline="true"
+               aria-label="Note content" data-placeholder="Start writing your note..."></div>
+
+          <p class="auth-message" id="editor-message" role="status" aria-live="polite"></p>
+
+          <div class="editor-foot">
+            <span class="count" id="word-count">0 words</span>
+            <div class="foot-actions">
+              <button type="button" class="btn-text btn-delete" id="delete-note" hidden>Delete</button>
+              <button type="button" class="btn btn-outline" id="gen-cards">Generate cards</button>
+              <button type="button" class="btn btn-outline" id="gen-quiz">Quiz</button>
+              <button type="button" class="btn-text" id="cancel-note">Cancel</button>
+              <button type="button" class="btn btn-primary" id="save-note">Create note</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- which deck? (only asked when the note's category is Others) -->
+  <dialog class="modal" id="pick-modal" aria-labelledby="pick-title">
+    <div class="modal-head">
+      <h2 id="pick-title">Where should it go?</h2>
+      <button type="button" class="modal-close" id="pick-close" aria-label="Close">&times;</button>
+    </div>
+    <p class="pick-note">The note itself stays in Notes. Only the new cards or quiz go into the deck you pick.</p>
+    <div class="field">
+      <label for="pick-deck">Deck</label>
+      <select id="pick-deck"></select>
+    </div>
+    <div class="field" id="pick-type-field" hidden>
+      <label for="pick-type">Question type</label>
+      <select id="pick-type">
+        <option value="multiple_choice">Multiple Choice</option>
+        <option value="true_false">True/False</option>
+        <option value="identification">Identification</option>
+      </select>
+    </div>
+    <p class="auth-message error" id="pick-message" role="status"></p>
+    <button type="button" class="btn btn-primary" id="pick-go" style="width:100%;justify-content:center">Continue</button>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script type="module" src="js/notes.js"></script>
+</body>
+</html>

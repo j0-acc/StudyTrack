@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz Mode — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/deck.css">
+  <link rel="stylesheet" href="css/flashcards.css">
+  <link rel="stylesheet" href="css/quiz.css">
+</head>
+<body>
+  <div class="app">
+    <header id="nav"></header>
+
+    <main>
+      <div class="empty" id="missing" hidden>
+        This deck has no cards to quiz yet. <a href="decks.html">Back to your decks</a>
+      </div>
+
+      <div id="quiz-area" hidden>
+        <div class="study-top">
+          <a href="decks.html" class="back" id="back-link" aria-label="Back to deck">&#8249;</a>
+          <span class="deck-chip" id="deck-chip"></span>
+        </div>
+
+        <section class="quiz" aria-label="Quiz">
+          <h1>Quiz Mode</h1>
+
+          <!-- 1. choose a question type -->
+          <div class="panel" id="setup">
+            <h2>Customize your quiz</h2>
+            <p class="sub">Choose a question type to begin.</p>
+            <div class="type-list" id="type-list" role="radiogroup" aria-label="Question type"></div>
+            <p class="setup-note" id="setup-note"></p>
+            <button type="button" class="btn btn-primary wide" id="start-btn" disabled>Start Quiz &#8594;</button>
+          </div>
+
+          <!-- 2. answering questions -->
+          <div id="question-area" hidden>
+            <p class="progress-text" id="progress-text" aria-live="polite"></p>
+            <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+            <div class="panel">
+              <p class="q-prompt" id="q-prompt"></p>
+              <p class="q-text" id="q-text"></p>
+              <div id="answers"></div>
+              <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+              <div class="next-row"><button type="button" class="btn btn-primary" id="next" hidden>Next &#8250;</button></div>
+            </div>
+          </div>
+
+          <!-- 3. results -->
+          <div class="done" id="results" hidden>
+            <h2>Quiz complete!</h2>
+            <p class="score" id="score"></p>
+            <p id="score-detail"></p>
+            <p id="save-status" role="status" aria-live="polite"></p>
+            <div class="actions">
+              <button type="button" class="btn btn-primary" id="again">Try again</button>
+              <button type="button" class="btn" id="change-type">Change type</button>
+              <a class="btn btn-grey" id="back-deck" href="decks.html">Back to Deck</a>
+              <button type="button" class="btn" id="retry-save" hidden>Try saving again</button>
+            </div>
+            <div class="review" id="review" hidden>
+              <h3>Review your mistakes</h3>
+              <ul id="review-list"></ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/quiz.js"></script>
+</body>
+</html>
