@@ -164,7 +164,7 @@ async function changePassword(e) {
 
 // ---------- sign out / delete ----------
 async function signOut() {
-  await supabase.auth.signOut();
+  await supabase.auth.signOut({ scope: 'local' }); // only this device; other phones/tabs stay logged in
   window.location.href = 'login.html';
 }
 

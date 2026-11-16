@@ -35,6 +35,7 @@ async function goHome() {
 // Sent here after being suspended while logged in
 if (new URLSearchParams(window.location.search).get('suspended') === '1') show(SUSPENDED_TEXT, 'error');
 if (new URLSearchParams(window.location.search).get('admin') === '1') show(ADMIN_TEXT, 'error');
+if (new URLSearchParams(window.location.search).get('expired') === '1') show('Your login ended, so you were signed out. Please log in again.', 'error');
 
 // If the user is already logged in, skip this page
 const { data: { session } } = await supabase.auth.getSession();

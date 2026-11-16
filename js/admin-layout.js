@@ -277,7 +277,7 @@ function drawSidebar(active, profile, role) {
   document.getElementById('a-role').textContent = role === 'super_admin' ? 'Super Admin' : 'Admin';
   document.getElementById('a-avatar').textContent = name.charAt(0).toUpperCase();
   document.getElementById('a-signout').addEventListener('click', async () => {
-    await supabase.auth.signOut();
+    await supabase.auth.signOut({ scope: 'local' }); // only this device; other phones/tabs stay logged in
     window.location.href = 'login.html';
   });
 }

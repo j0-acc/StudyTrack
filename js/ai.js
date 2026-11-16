@@ -1,8 +1,18 @@
 import { supabase } from './supabase.js';
 
 // Calls the "generate-cards" function and turns any problem into a readable error.
-async function callAI(body) {
+async function callAI(body, retried = false) {
   const { data, error } = await supabase.functions.invoke('generate-cards', { body });
+  // 401 = the login on this page has ended (for example, the account signed out on another tab or device)
+  if (error && error.context && error.context.status === 401) {
+    if (!retried) {
+      const { error: refreshError } = await supabase.auth.refreshSession();
+      if (!refreshError) return callAI(body, true); // got a fresh login: try once more
+    }
+    await supabase.auth.signOut({ scope: 'local' });
+    window.location.href = 'login.html?expired=1';
+    throw new Error('Your login has ended. Please log in again.');
+  }
   if (error) {
     // no internet (the request never reached the server): let the page keep the work for later
     if (error.name === 'FunctionsFetchError' || !navigator.onLine) throw new Error('Failed to fetch (offline)');
