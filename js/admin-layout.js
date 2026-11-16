@@ -207,8 +207,30 @@ export async function startAdminPage(active) {
   }
   const profile = await loadProfile(user.id);
   drawSidebar(active, profile, state.admin_role);
+  watchTables();
   refreshInactiveBadge();
   return { user, profile, role: state.admin_role || 'admin' };
+}
+
+// Phones show admin tables as cards (admin-panel.css): each cell gets its column name as a label.
+// Works for every table.a-list, including rows added later (search, paging, filters).
+function labelTables() {
+  document.querySelectorAll('table.a-list').forEach((table) => {
+    const names = [...table.querySelectorAll('thead th')].map((th) => th.textContent.trim());
+    table.querySelectorAll('tbody tr').forEach((tr) => {
+      [...tr.children].forEach((td, i) => {
+        if (td.colSpan > 1 || !names[i]) td.removeAttribute('data-label');
+        else if (td.dataset.label !== names[i]) td.dataset.label = names[i];
+      });
+    });
+  });
+}
+let tableWatcher = null;
+function watchTables() {
+  if (tableWatcher) return;
+  labelTables();
+  tableWatcher = new MutationObserver(() => labelTables());
+  tableWatcher.observe(document.querySelector('.a-main') || document.body, { childList: true, subtree: true });
 }
 
 function drawSidebar(active, profile, role) {

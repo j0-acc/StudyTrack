@@ -61,3 +61,10 @@
 .forgot-row { display: flex; justify-content: flex-end; margin: -0.5rem 0 0.75rem; }
 .forgot-row a { color: var(--blue); font-size: 0.8rem; font-weight: 600; }
 .auth-message a { color: var(--blue); font-weight: 600; }
+
+/* touch screens: easier to tap (added after the responsive check) */
+@media (pointer: coarse) {
+  .toggle-pw { min-width: 44px; min-height: 40px; }
+  .auth-switch a, .forgot-row a, .link-btn { display: inline-block; padding: 0.55rem 0.25rem; }
+  .field input { min-height: 44px; }
+}

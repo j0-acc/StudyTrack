@@ -97,3 +97,31 @@
 .pull-refresh.ready { background: var(--orange); color: #fff; }
 .pull-refresh.spinning { animation: pull-spin 0.7s linear infinite; }
 @keyframes pull-spin { from { rotate: 0deg; } to { rotate: 360deg; } }
+
+/* ===== Phones and tablets (added after the responsive check) ===== */
+/* tablets: keep the calendar and your topics side by side down to 560 px instead of one long column */
+@media (min-width: 560px) and (max-width: 800px) {
+  .dash-grid { grid-template-columns: minmax(260px, 320px) 1fr; }
+}
+
+/* touch screens: buttons at least 40 px so they are easy to tap (desktop mice keep the original sizes) */
+@media (pointer: coarse) {
+  .btn, .filter, .mini, .a-btn, .a-chip, .tab, .ch-tabs button, .side-btn, .invite-toast button,
+  .btn-text, .seg button, select, input[type="text"], input[type="email"], input[type="search"], input[type="password"], input[type="number"] {
+    min-height: 40px;
+  }
+  .cal-nav, .card-del, .pin-btn, .modal-close {
+    min-width: 40px; min-height: 40px; display: inline-grid; place-items: center;
+  }
+  .ch-btn, .a-link-btn, .link-blue, .a-signout {
+    min-height: 40px; display: inline-flex; align-items: center; justify-content: center; padding-inline: 0.6rem;
+  }
+  .nav-links a { padding-block: 0.65rem; }
+  .nav-user, .chip, .back, .a-kebab, .a-page { min-height: 40px; min-width: 40px; }
+  #show-answer { min-height: 40px; padding-inline: 0.75rem; }
+  .nav-user, .back { display: inline-flex; align-items: center; justify-content: center; }
+  .a-who-link { padding-block: 0.5rem; }
+  button.a-switch { width: 52px; height: 30px; }
+  button.a-switch::after { width: 24px; height: 24px; }
+  button.a-switch.on::after { transform: translateX(22px); }
+}
