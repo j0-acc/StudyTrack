@@ -1,0 +1,86 @@
+/* ===== Smooth motion for the whole system =====
+   Loaded on every page by js/motion.js. Short and gentle on purpose (0.15-0.3s), and turned off for
+   people who ask their device for less motion. */
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);   /* fast start, soft landing */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* ---------- buttons and clickable things: smooth hover, a small "press" when tapped ---------- */
+.btn, .filter, .mini, .pin-btn, .answer-btn, .side-link, .side-btn, .a-link, .btn-text, .modal-close,
+.ch-tabs button, .invite-toast button, .a-signout, .card-del {
+  transition: transform 0.18s var(--ease-out), box-shadow 0.2s ease, background-color 0.2s ease,
+              border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+.btn:active:not(:disabled), .filter:active, .mini:active, .pin-btn:active, .answer-btn:active:not(:disabled),
+.side-btn:active, .ch-tabs button:active, .invite-toast button:active {
+  transform: scale(0.96);
+  transition-duration: 0.07s;
+}
+.btn-text:active, .card-del:active { opacity: 0.6; }
+.modal-close:hover { transform: rotate(90deg); }
+
+/* cards lift a little when you point at them */
+.note-card, .deck-card, .ch-card, .lb-card, .card-item, .subject, .a-stat, .a-card {
+  transition: transform 0.22s var(--ease-out), box-shadow 0.22s ease, border-color 0.2s ease;
+}
+.note-card:hover, .deck-card:hover, .ch-card:hover { transform: translateY(-2px); }
+
+/* ---------- text boxes and dropdowns: soft focus glow ---------- */
+input, select, textarea, [contenteditable="true"] {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  box-shadow: 0 0 0 4px rgba(255, 157, 46, 0.18);
+}
+
+/* ---------- top bar links ---------- */
+.nav-links a { transition: color 0.2s ease, border-color 0.25s ease; }
+
+/* ---------- sidebars (admin panel and Settings): slide on hover, active item marker grows in ---------- */
+.a-link, .side-link { position: relative; }
+.a-link:not([aria-disabled="true"]):hover, .side-link:hover { transform: translateX(3px); }
+.a-link[aria-current="page"]::before, .side-link[aria-current="page"]::before {
+  content: ""; position: absolute; left: 0; top: 22%; bottom: 22%; width: 3px; border-radius: 3px;
+  background: var(--orange); animation: marker-in 0.35s var(--ease-out) both;
+}
+@keyframes marker-in { from { transform: scaleY(0); opacity: 0; } }
+
+/* ---------- pop-up forms: fade and slide up when opening, the reverse when closing ---------- */
+dialog.modal[open] { animation: modal-in 0.26s var(--ease-out); }
+dialog.modal[open]::backdrop { animation: backdrop-in 0.26s ease-out; }
+dialog.modal.closing { animation: modal-out 0.18s var(--ease-in) forwards; }
+dialog.modal.closing::backdrop { animation: backdrop-out 0.18s var(--ease-in) forwards; }
+@keyframes modal-in { from { opacity: 0; transform: translateY(18px) scale(0.97); } }
+@keyframes modal-out { to { opacity: 0; transform: translateY(12px) scale(0.97); } }
+@keyframes backdrop-in { from { opacity: 0; } }
+@keyframes backdrop-out { to { opacity: 0; } }
+
+/* ---------- small messages at the bottom of the screen ---------- */
+.toast:not([hidden]) { animation: toast-in 0.28s var(--ease-out); }
+.toast.leaving { animation: toast-out 0.18s var(--ease-in) forwards; }
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 14px); } }
+@keyframes toast-out { to { opacity: 0; transform: translate(-50%, 10px); } }
+.invite-toast { animation: invite-in 0.35s var(--ease-out); }
+@keyframes invite-in { from { opacity: 0; transform: translateY(16px); } }
+
+/* ---------- sections that appear when you switch views (tabs, quiz screens, note editor, results...) ---------- */
+[role="tabpanel"]:not([hidden]), #list-view:not([hidden]), #editor-view:not([hidden]),
+#study-area:not([hidden]), #quiz-area:not([hidden]), #question-area:not([hidden]), #results:not([hidden]),
+#review:not([hidden]), #done:not([hidden]), #quiz:not([hidden]), #result:not([hidden]), #stage:not([hidden]),
+#question:not([hidden]), #board:not([hidden]), #ai-pending, .settings-main > section:not([hidden]),
+#deletion-banner, .empty {
+  animation: view-in 0.3s var(--ease-out);
+}
+@keyframes view-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* the "Offline" label in the top bar */
+.offline-pill:not([hidden]) { animation: backdrop-in 0.25s ease-out; }
+
+/* ---------- less motion for people who turned it off on their device ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after, ::backdrop {
+    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

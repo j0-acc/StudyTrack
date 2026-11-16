@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audit Logs — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/admin-panel.css">
+</head>
+<body>
+  <div class="a-app">
+    <aside id="a-side"></aside>
+
+    <main class="a-main">
+      <h1>Audit Logs</h1>
+      <p class="a-sub">A permanent record of administrative actions. Entries cannot be edited or deleted.</p>
+      <p class="a-msg" id="a-message" role="status" aria-live="polite"></p>
+
+      <div class="a-toolbar">
+        <label class="a-search" style="flex-basis:300px">
+          <span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search the audit log</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input type="search" id="search" placeholder="Search by admin, action, or account...">
+        </label>
+        <div class="a-toolbar" style="margin:0" role="group" aria-label="Filter by action" id="chips">
+          <button type="button" class="a-chip" data-kind="all" aria-pressed="true">All actions</button>
+          <button type="button" class="a-chip" data-kind="suspensions" aria-pressed="false">Suspensions</button>
+          <button type="button" class="a-chip" data-kind="deletions" aria-pressed="false">Deletions</button>
+          <button type="button" class="a-chip" data-kind="cancellations" aria-pressed="false">Cancellations</button>
+          <button type="button" class="a-chip" data-kind="admins" aria-pressed="false">Admin changes</button>
+        </div>
+      </div>
+
+      <section class="a-card flush" aria-label="Audit log">
+        <div class="a-scroll">
+          <table class="a-list">
+            <thead>
+              <tr>
+                <th scope="col">Date and time</th>
+                <th scope="col">Admin</th>
+                <th scope="col">Action</th>
+                <th scope="col">Affected account</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div class="a-foot">
+          <span id="showing"></span>
+          <div class="a-pages" id="pages"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="js/admin-audit.js"></script>
+</body>
+</html>

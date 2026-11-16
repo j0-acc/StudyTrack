@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account Details — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/admin-panel.css">
+</head>
+<body>
+  <div class="a-app">
+    <aside id="a-side"></aside>
+
+    <main class="a-main">
+      <a class="a-back" id="back" href="admin-users.html">← Back to User Management</a>
+      <p class="a-msg" id="a-message" role="status" aria-live="polite"></p>
+
+      <div id="content" hidden>
+        <section class="a-head" aria-label="Account">
+          <span id="head-avatar"></span>
+          <div>
+            <h1 id="head-name"></h1>
+            <p id="head-email"></p>
+            <span id="head-status"></span><small id="head-id"></small>
+          </div>
+        </section>
+
+        <div class="a-detail">
+          <div>
+            <section class="a-card" aria-labelledby="info-title">
+              <h2 id="info-title">Account information</h2>
+              <dl class="a-info-list" id="info"></dl>
+            </section>
+            <section class="a-card" aria-labelledby="activity-title">
+              <h2 id="activity-title">Admin activity on this account</h2>
+              <ul class="a-timeline" id="activity"></ul>
+            </section>
+          </div>
+          <div>
+            <section class="a-sched" id="sched" hidden aria-labelledby="sched-title">
+              <h2 id="sched-title">Scheduled deletion</h2>
+              <strong id="sched-date"></strong>
+              <span class="a-pill" id="sched-left"></span>
+              <p id="sched-text"></p>
+            </section>
+            <section class="a-card" aria-labelledby="actions-title">
+              <h2 id="actions-title">Admin actions</h2>
+              <div class="a-btn-stack" id="actions"></div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/admin-account.js"></script>
+</body>
+</html>

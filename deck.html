@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deck — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/deck.css">
+  <link rel="stylesheet" href="css/ai.css">
+</head>
+<body>
+  <div class="app">
+    <header id="nav"></header>
+
+    <main>
+      <div class="empty" id="deck-missing" hidden>
+        We couldn't find that deck. <a href="decks.html">Back to your decks</a>
+      </div>
+
+      <div id="deck-content" hidden>
+        <div class="deck-top">
+          <a href="decks.html" class="back" aria-label="Back to decks">&#8249;</a>
+          <span class="deck-chip" id="deck-chip"></span>
+          <button type="button" class="btn btn-edit" id="edit-btn">Edit</button>
+        </div>
+        <p class="deck-description" id="deck-desc"></p>
+        <p class="muted-small" id="last-studied"></p>
+
+        <div class="mode-grid">
+          <a class="mode" id="flash-mode">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+            <h2>Flashcard Mode</h2>
+            <p>Review cards at your own pace by flipping through them.</p>
+            <span class="mode-meta" id="flash-meta"></span>
+          </a>
+          <a class="mode" id="quiz-mode">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h4"/></svg>
+            <h2>Quiz Mode</h2>
+            <p>Test your knowledge with multiple-choice, true/false, and identification questions, with instant feedback.</p>
+            <span class="mode-meta" id="quiz-meta"></span>
+          </a>
+        </div>
+
+        <h2 class="section-label">Cards</h2>
+        <ol class="card-list" id="card-list"></ol>
+
+        <section class="card ai-card" id="ai-section" aria-labelledby="ai-title">
+          <h2 id="ai-title">Generate with AI &#10022;</h2>
+          <div class="ai-import">
+            <button type="button" class="btn btn-blue" id="import-btn">Import</button>
+            <small>Upload notes or PDF</small>
+            <input type="file" id="import-input" accept=".pdf,.txt,.md,application/pdf,text/plain" hidden>
+            <p class="file-name" id="file-name"></p>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Where should the cards come from?">
+            <button type="button" class="tab" role="tab" id="tab-topic" aria-selected="true">Topic</button>
+            <button type="button" class="tab" role="tab" id="tab-text" aria-selected="false">Paste Text</button>
+          </div>
+          <textarea id="ai-input" aria-label="Topic or study material"></textarea>
+          <div class="ai-meta">
+            <span id="ai-counter"></span>
+            <label>Cards to make
+              <select id="ai-count">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="15">15</option>
+              </select>
+            </label>
+          </div>
+          <div class="ai-actions"><button type="button" class="btn btn-primary" id="ai-generate">Generate Cards</button></div>
+          <p class="auth-message" id="ai-message" role="status" aria-live="polite"></p>
+
+          <div class="ai-results" id="ai-results" hidden>
+            <h3>Review the cards</h3>
+            <ol class="ai-list" id="ai-list"></ol>
+            <div class="save-row"><button type="button" class="btn btn-primary" id="ai-save">Save cards</button></div>
+          </div>
+        </section>
+
+        <p class="or-line">or create from scratch</p>
+
+        <section class="card add-card" aria-label="Add a card">
+          <h2>Add Card</h2>
+          <form id="card-form" novalidate>
+            <div class="two-col">
+              <div class="field">
+                <label for="front">Front (question)</label>
+                <textarea id="front" placeholder="What is...?" maxlength="1000"></textarea>
+              </div>
+              <div class="field">
+                <label for="back">Back (answer)</label>
+                <textarea id="back" placeholder="The answer is..." maxlength="1000"></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="card-submit">Add card</button>
+            <p class="auth-message" id="card-message" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="modal" id="edit-modal" aria-labelledby="edit-title">
+    <div class="modal-head">
+      <h2 id="edit-title">Edit Deck</h2>
+      <button type="button" class="modal-close" id="edit-close" aria-label="Close">&times;</button>
+    </div>
+    <form id="edit-form" novalidate>
+      <div class="field">
+        <label for="edit-name">Deck name</label>
+        <input id="edit-name" type="text" maxlength="60" required>
+      </div>
+      <div class="field">
+        <label for="edit-desc">Description</label>
+        <textarea id="edit-desc" maxlength="200"></textarea>
+      </div>
+      <div class="field">
+        <label id="edit-color-label">Color</label>
+        <div class="swatches" id="edit-swatches" role="radiogroup" aria-labelledby="edit-color-label"></div>
+      </div>
+      <button type="submit" class="btn btn-primary" id="edit-submit">Save changes</button>
+      <p class="auth-message" id="edit-message" role="status" aria-live="polite"></p>
+      <button type="button" class="btn-danger-text" id="delete-deck">Delete this deck</button>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/deck.js"></script>
+</body>
+</html>

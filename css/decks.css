@@ -1,0 +1,62 @@
+/* ===== Decks page ===== */
+.page-head h1 { margin: 0 0 0.25rem; font-size: 1.75rem; letter-spacing: -0.01em; }
+.page-head p { margin: 0 0 1.25rem; color: var(--ink-soft); font-size: var(--fs-small); }
+
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.filter {
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: var(--radius-pill); padding: 0.45rem 1rem; font: 600 0.8rem var(--font); cursor: pointer;
+}
+.filter[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.search {
+  border: 1.5px solid var(--line); background: var(--surface); border-radius: var(--radius-pill);
+  padding: 0.55rem 1rem; font: inherit; font-size: var(--fs-small); min-width: 220px;
+}
+.search:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255, 157, 46, 0.2); }
+
+.deck-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.25rem; }
+.deck-card {
+  display: block; border-radius: var(--radius-md); padding: 1.25rem; min-height: 130px;
+  box-shadow: var(--shadow); transition: transform 0.15s ease;
+}
+.deck-card:hover { transform: translateY(-2px); }
+.deck-card h2 { margin: 0 0 0.25rem; font-size: var(--fs-body); }
+.deck-desc { margin: 0 0 0.75rem; font-size: 0.8rem; color: #4b5563; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.deck-card .bar { background: rgba(255, 255, 255, 0.7); }
+.deck-card small { display: block; margin-top: 0.5rem; font-size: 0.75rem; color: #4b5563; }
+
+.deck-add {
+  display: grid; place-items: center; min-height: 130px; border-radius: var(--radius-md);
+  border: 1.5px dashed #e3cfa8; background: transparent; color: var(--ink-soft);
+  font: 600 var(--fs-small) var(--font); cursor: pointer;
+}
+.deck-add:hover { background: #fff1de; }
+
+/* ----- Add Deck popup ----- */
+dialog.modal {
+  border: 0; border-radius: var(--radius-lg); padding: 1.5rem 1.75rem; width: min(420px, calc(100% - 2rem));
+  box-shadow: 0 20px 60px rgba(60, 35, 5, 0.3); color: var(--ink);
+}
+dialog.modal::backdrop { background: rgba(35, 39, 51, 0.45); }
+.modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.modal-head h2 { margin: 0; font-size: 1.1rem; }
+.modal-close { background: none; border: 0; font-size: 1.4rem; line-height: 1; cursor: pointer; color: var(--orange-deep); padding: 0.1rem 0.4rem; }
+
+dialog .field input, dialog .field textarea {
+  width: 100%; padding: 0.75rem 1rem; border: 1.5px solid var(--line); border-radius: var(--radius-md);
+  font: inherit; font-size: var(--fs-small); background: #fffdf9; color: var(--ink);
+}
+dialog .field textarea { resize: vertical; min-height: 70px; }
+dialog .field input:focus, dialog .field textarea:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255, 157, 46, 0.2); }
+
+.swatches { display: flex; gap: 0.6rem; }
+.swatch input { position: absolute; opacity: 0; }
+.swatch span { display: block; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
+.swatch input:checked + span { border-color: var(--ink); }
+.swatch input:focus-visible + span { outline: 3px solid var(--blue); outline-offset: 2px; }
+.swatch { position: relative; }
+
+dialog .btn-primary { width: 100%; justify-content: center; padding: 0.85rem; margin-top: 0.75rem; }
+dialog .btn-primary:disabled { opacity: 0.6; cursor: wait; }

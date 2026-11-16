@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confirm your email — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <main class="auth-page">
+    <div class="auth-card">
+
+      <aside class="auth-side">
+        <img src="assets/hero.png" alt="">
+        <h2>Study smarter. Remember more.</h2>
+        <p>Your AI study companion — flashcards, quizzes, and notes in one place.</p>
+      </aside>
+
+      <section class="auth-form">
+        <h1>Confirm your email</h1>
+        <p class="auth-sub" id="sub">Enter the 6-digit code we emailed you.</p>
+
+        <form id="code-form" novalidate>
+          <div class="field" id="email-field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="code">Confirmation code</label>
+            <input id="code" class="code-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="••••••" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="submit-btn">Confirm email</button>
+          <p class="auth-message" id="message" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="code-help">Didn't get it? Check your spam folder, or <button type="button" class="link-btn" id="resend">send a new code</button></p>
+        <p class="auth-switch">Already confirmed? <a href="login.html">Log in</a></p>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module" src="js/confirm.js"></script>
+</body>
+</html>

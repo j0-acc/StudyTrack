@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Challenge — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/flashcards.css">
+  <link rel="stylesheet" href="css/quiz.css">
+  <link rel="stylesheet" href="css/challenges.css">
+</head>
+<body>
+  <div class="app">
+    <header id="nav"></header>
+
+    <main class="play">
+      <a href="challenges.html" class="ch-btn" style="margin-bottom:1rem">‹ Back to Challenges</a>
+      <p class="ch-msg" id="message" role="status" aria-live="polite"></p>
+
+      <!-- answering -->
+      <div id="quiz" hidden>
+        <div class="play-top">
+          <div>
+            <h1 id="title"></h1>
+            <small id="subtitle"></small>
+          </div>
+          <span class="timer" id="timer" aria-label="Time taken">0:00</span>
+        </div>
+        <p class="progress-text" id="progress-text" aria-live="polite"></p>
+        <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+        <div class="panel">
+          <p class="q-prompt" id="q-type">Question</p>
+          <p class="q-text" id="q-text"></p>
+          <div class="answers-list" id="answers" role="radiogroup" aria-labelledby="q-text"></div>
+          <div class="play-nav">
+            <button type="button" class="btn btn-grey" id="prev">‹ Back</button>
+            <button type="button" class="btn btn-primary" id="next">Next ›</button>
+          </div>
+        </div>
+        <div class="dots" id="dots" aria-label="Jump to question"></div>
+      </div>
+
+      <!-- result -->
+      <div id="result" hidden>
+        <div class="panel result-hero">
+          <h2 id="r-title"></h2>
+          <p id="r-sub"></p>
+          <div class="vs" id="r-vs"></div>
+          <div class="result-actions">
+            <a class="btn btn-primary" href="challenges.html">Back to Challenges</a>
+            <a class="btn btn-grey" href="challenges.html#leaderboard">Leaderboard</a>
+          </div>
+        </div>
+        <h2 class="ch-section" style="margin-top:1.5rem">Answer review</h2>
+        <ul class="rv" id="r-review"></ul>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/challenge-play.js"></script>
+</body>
+</html>

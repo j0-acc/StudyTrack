@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/admin-panel.css">
+</head>
+<body>
+  <div class="a-app">
+    <aside id="a-side"></aside>
+
+    <main class="a-main">
+      <h1>Admin Dashboard</h1>
+      <p class="a-sub">Manage accounts and keep the system secure.</p>
+
+      <p class="a-msg" id="a-message" role="status" aria-live="polite"></p>
+
+      <section class="a-stats" aria-label="Summary">
+        <div class="a-stat">
+          <svg viewBox="0 0 24 24" aria-hidden="true" style="color:#2f6bff"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          <small>Total Users</small><strong id="s-total">0</strong>
+        </div>
+        <div class="a-stat">
+          <svg viewBox="0 0 24 24" aria-hidden="true" style="color:#1f9d55"><circle cx="10" cy="8" r="4"/><path d="M2 21c0-4 3.5-6 8-6"/><path d="M15 12l2.5 2.5L22 10"/></svg>
+          <small>Active Users</small><strong id="s-active">0</strong>
+        </div>
+        <div class="a-stat">
+          <svg viewBox="0 0 24 24" aria-hidden="true" style="color:#6b7280"><circle cx="10" cy="8" r="4"/><path d="M2 21c0-4 3.5-6 8-6"/><path d="M18 8v6M15 11h6"/></svg>
+          <small>Inactive Users</small><strong id="s-inactive">0</strong>
+        </div>
+        <div class="a-stat">
+          <svg viewBox="0 0 24 24" aria-hidden="true" style="color:#9b1c1c"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>
+          <small>Pending Deletion</small><strong id="s-pending">0</strong>
+        </div>
+      </section>
+
+      <div class="a-grid">
+        <section class="a-card" aria-labelledby="pending-title">
+          <h2 id="pending-title">Pending deletion — action needed</h2>
+          <div id="pending-list"></div>
+        </section>
+        <section class="a-card" aria-labelledby="activity-title">
+          <h2 id="activity-title">Recent admin activity</h2>
+          <ul class="a-feed" id="activity-list"></ul>
+        </section>
+      </div>
+
+      <section class="a-card" aria-labelledby="recent-title">
+        <h2 id="recent-title">Recently registered</h2>
+        <div id="recent-table"></div>
+      </section>
+    </main>
+  </div>
+
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

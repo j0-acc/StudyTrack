@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inactive Accounts — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/admin-panel.css">
+</head>
+<body>
+  <div class="a-app">
+    <aside id="a-side"></aside>
+
+    <main class="a-main">
+      <h1>Inactive Accounts</h1>
+      <p class="a-sub">Accounts flagged by the 30-day inactivity policy.</p>
+      <p class="a-msg" id="a-message" role="status" aria-live="polite"></p>
+
+      <div class="a-info" role="note">
+        <b aria-hidden="true">i</b>
+        <span>Accounts inactive for 30 days are flagged. Scheduling a deletion gives the user 7 days, and they keep their account by simply logging in.</span>
+      </div>
+
+      <section class="a-card flush" aria-label="Inactive accounts">
+        <div class="a-scroll">
+          <table class="a-list">
+            <thead>
+              <tr>
+                <th scope="col">User</th>
+                <th scope="col">Last active</th>
+                <th scope="col">Days inactive</th>
+                <th scope="col">Status</th>
+                <th scope="col">Deletion date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <p class="a-note">Completed deletions are recorded permanently in the Audit Logs.</p>
+    </main>
+  </div>
+
+  <script type="module" src="js/admin-inactive.js"></script>
+</body>
+</html>

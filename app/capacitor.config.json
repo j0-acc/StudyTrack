@@ -1,0 +1,8 @@
+{
+  "appId": "com.aclcmandaue.studytrack",
+  "appName": "StudyTrack",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  }
+}

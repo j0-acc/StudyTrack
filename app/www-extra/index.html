@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StudyTrack</title>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { display: grid; place-items: center; background: #fff6ea; font-family: system-ui, sans-serif; color: #232733; }
+    .mark { width: 72px; height: 72px; border-radius: 20px; background: #ff9d2e; display: grid; place-items: center; margin: 0 auto 0.75rem; }
+    .mark svg { width: 40px; height: 40px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    p { margin: 0; font-weight: 700; text-align: center; }
+    p span { color: #2f9bf0; }
+    small { display: block; margin-top: 0.4rem; color: #6b7280; text-align: center; font-weight: 400; }
+  </style>
+</head>
+<body>
+  <div>
+    <div class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5z"/></svg></div>
+    <p><span>Student</span> StudyTrack<small id="status">Opening...</small></p>
+  </div>
+  <script type="module" src="js/app-start.js"></script>
+</body>
+</html>

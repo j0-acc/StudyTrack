@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Challenges — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/challenges.css">
+</head>
+<body>
+  <div class="app">
+    <header id="nav"></header>
+
+    <main>
+      <div class="ch-head">
+        <div class="page-head">
+          <h1>Challenges</h1>
+          <p>Challenge your friends on your decks and climb the leaderboard.</p>
+        </div>
+        <button type="button" class="btn btn-primary" id="new-btn">+ New challenge</button>
+      </div>
+
+      <div class="ch-tabs" role="tablist" aria-label="Challenges sections">
+        <button type="button" role="tab" id="tab-challenges" aria-controls="panel-challenges" aria-selected="true">Challenges<span class="tab-count" id="count-challenges" hidden></span></button>
+        <button type="button" role="tab" id="tab-friends" aria-controls="panel-friends" aria-selected="false" tabindex="-1">Friends<span class="tab-count" id="count-friends" hidden></span></button>
+        <button type="button" role="tab" id="tab-leaderboard" aria-controls="panel-leaderboard" aria-selected="false" tabindex="-1">Leaderboard</button>
+      </div>
+
+      <p class="ch-msg" id="message" role="status" aria-live="polite"></p>
+
+      <!-- CHALLENGES -->
+      <section role="tabpanel" id="panel-challenges" aria-labelledby="tab-challenges">
+        <h2 class="ch-section">Your turn</h2>
+        <div class="ch-list" id="list-turn"></div>
+        <h2 class="ch-section">Waiting for your friend</h2>
+        <div class="ch-list" id="list-waiting"></div>
+        <h2 class="ch-section">Results</h2>
+        <div class="ch-list" id="list-results"></div>
+      </section>
+
+      <!-- FRIENDS -->
+      <section role="tabpanel" id="panel-friends" aria-labelledby="tab-friends" hidden>
+        <div class="fr-top">
+          <div class="ch-card fr-code">
+            <h2>Your friend code</h2>
+            <div class="code-row">
+              <strong id="my-code">—</strong>
+              <button type="button" class="ch-btn" id="copy-code">Copy</button>
+            </div>
+            <p>Share this code so classmates can add you.</p>
+          </div>
+          <form class="ch-card fr-add" id="add-form">
+            <h2><label for="add-input">Add a friend</label></h2>
+            <div class="code-row">
+              <input id="add-input" placeholder="Friend code (ST-7K2Q) or email" autocomplete="off" maxlength="120">
+              <button type="submit" class="btn btn-primary" id="add-btn">Send request</button>
+            </div>
+            <p class="auth-message" id="add-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div id="requests-box" hidden>
+          <h2 class="ch-section">Friend requests</h2>
+          <div class="ch-list" id="list-requests"></div>
+        </div>
+        <h2 class="ch-section">Friends</h2>
+        <div class="ch-list" id="list-friends"></div>
+        <div id="sent-box" hidden>
+          <h2 class="ch-section">Requests you sent</h2>
+          <div class="ch-list" id="list-sent"></div>
+        </div>
+      </section>
+
+      <!-- LEADERBOARD -->
+      <section role="tabpanel" id="panel-leaderboard" aria-labelledby="tab-leaderboard" hidden>
+        <div class="lb-controls">
+          <div class="filters" role="group" aria-label="Who to show">
+            <button type="button" class="filter" data-scope="friends" aria-pressed="true">Friends</button>
+            <button type="button" class="filter" data-scope="everyone" aria-pressed="false">Everyone</button>
+          </div>
+          <div class="filters" role="group" aria-label="Time period">
+            <button type="button" class="filter" data-period="week" aria-pressed="true">This week</button>
+            <button type="button" class="filter" data-period="all" aria-pressed="false">All time</button>
+          </div>
+        </div>
+        <div class="ch-card lb-card">
+          <table class="lb-table">
+            <thead>
+              <tr><th scope="col">Rank</th><th scope="col">Student</th><th scope="col">W</th><th scope="col">D</th><th scope="col">L</th><th scope="col">Points</th></tr>
+            </thead>
+            <tbody id="lb-rows"></tbody>
+          </table>
+          <p class="lb-note">Win = 3 points, draw = 1, loss = 0. “This week” starts on Monday.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- New challenge -->
+  <dialog class="modal" id="new-modal" aria-labelledby="new-title">
+    <div class="modal-head">
+      <h2 id="new-title">New challenge</h2>
+      <button type="button" class="modal-close" id="new-close" aria-label="Close">&times;</button>
+    </div>
+    <form id="new-form" novalidate>
+      <div class="field">
+        <span class="field-label" id="mode-label">How do you want to play?</span>
+        <div class="mode-pick" role="radiogroup" aria-labelledby="mode-label" id="new-mode">
+          <button type="button" role="radio" data-mode="live" aria-checked="true"><strong>⚡ Live now</strong><small>Play at the same time. Your friend must be online.</small></button>
+          <button type="button" role="radio" data-mode="send" aria-checked="false"><strong>✉️ Send challenge</strong><small>Play now, your friend plays within 24 hours.</small></button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="new-friend">Opponent</label>
+        <select id="new-friend"></select>
+      </div>
+      <div class="field">
+        <label for="new-deck">Deck</label>
+        <select id="new-deck"></select>
+      </div>
+      <div class="field">
+        <span class="field-label" id="type-label">Question type</span>
+        <div class="filters" role="radiogroup" aria-labelledby="type-label" id="new-type">
+          <button type="button" class="filter" role="radio" data-type="mc" aria-checked="true" aria-pressed="true">Multiple choice</button>
+          <button type="button" class="filter" role="radio" data-type="tf" aria-checked="false" aria-pressed="false">True or False</button>
+          <button type="button" class="filter" role="radio" data-type="id" aria-checked="false" aria-pressed="false">Identification</button>
+          <button type="button" class="filter" role="radio" data-type="mixed" aria-checked="false" aria-pressed="false">Mixed</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label" id="count-label">Questions</span>
+        <div class="filters" role="radiogroup" aria-labelledby="count-label" id="new-count">
+          <button type="button" class="filter" role="radio" data-count="5" aria-checked="false" aria-pressed="false">5</button>
+          <button type="button" class="filter" role="radio" data-count="10" aria-checked="true" aria-pressed="true">10</button>
+          <button type="button" class="filter" role="radio" data-count="15" aria-checked="false" aria-pressed="false">15</button>
+        </div>
+      </div>
+      <p class="pick-note" id="mode-note"></p>
+      <button type="submit" class="btn btn-primary" id="new-go">Invite to live match</button>
+      <p class="auth-message" id="new-message" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/challenges.js"></script>
+</body>
+</html>

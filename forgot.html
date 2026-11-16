@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forgot password — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <main class="auth-page">
+    <div class="auth-card">
+
+      <aside class="auth-side">
+        <img src="assets/hero.png" alt="">
+        <h2>Study smarter. Remember more.</h2>
+        <p>Your AI study companion — flashcards, quizzes, and notes in one place.</p>
+      </aside>
+
+      <section class="auth-form">
+        <h1>Forgot your password?</h1>
+        <p class="auth-sub" id="sub">Enter your email and we will send you a 6-digit code to set a new password.</p>
+
+        <form id="email-form" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <button type="submit" class="btn btn-primary" id="send-btn">Send code</button>
+        </form>
+
+        <form id="reset-form" novalidate hidden>
+          <div class="field">
+            <label for="code">Code from the email</label>
+            <input id="code" class="code-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="••••••" required>
+          </div>
+          <div class="field">
+            <label for="password">New password</label>
+            <div class="input-wrap">
+              <input id="password" type="password" placeholder="At least 6 characters" autocomplete="new-password" required>
+              <button type="button" class="toggle-pw" data-target="password" aria-label="Show password">Show</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="confirm">Confirm new password</label>
+            <div class="input-wrap">
+              <input id="confirm" type="password" placeholder="Type it again" autocomplete="new-password" required>
+              <button type="button" class="toggle-pw" data-target="confirm" aria-label="Show password">Show</button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" id="reset-btn">Change password</button>
+          <p class="code-help">Didn't get it? Check your spam folder, or <button type="button" class="link-btn" id="resend">send a new code</button></p>
+        </form>
+
+        <p class="auth-message" id="message" role="status" aria-live="polite"></p>
+        <p class="auth-switch">Remembered it? <a href="login.html">Log in</a></p>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module" src="js/forgot.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live match — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/flashcards.css">
+  <link rel="stylesheet" href="css/quiz.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/challenges.css">
+</head>
+<body>
+  <div class="app">
+    <header id="nav"></header>
+
+    <main class="play">
+      <a href="challenges.html" class="ch-btn" id="back" style="margin-bottom:1rem">‹ Back to Challenges</a>
+      <p class="ch-msg" id="message" role="status" aria-live="polite"></p>
+
+      <!-- scoreboard, shown during the match -->
+      <div class="live-board" id="board" hidden>
+        <div class="live-player me"><small id="me-name">You</small><strong id="me-score">0</strong></div>
+        <div class="live-mid"><span id="q-count"></span><small id="deck-name"></small></div>
+        <div class="live-player"><small><span class="live-dot" id="other-dot" title="Offline"></span><span id="other-name"></span></small><strong id="other-score">0</strong></div>
+      </div>
+
+      <!-- waiting / countdown / messages -->
+      <div class="panel live-center" id="stage" hidden>
+        <p class="live-big" id="stage-big"></p>
+        <h2 id="stage-title"></h2>
+        <p id="stage-text"></p>
+        <div class="result-actions" id="stage-actions"></div>
+      </div>
+
+      <!-- a question -->
+      <div id="question" hidden>
+        <div class="live-timer" aria-hidden="true"><span id="timer-bar"></span></div>
+        <div class="panel">
+          <div class="live-q-head">
+            <p class="q-prompt" id="q-label">Question</p>
+            <span class="live-secs" id="secs" aria-live="off"></span>
+          </div>
+          <p class="q-text" id="q-text"></p>
+          <div class="answers-list" id="answers" role="radiogroup" aria-labelledby="q-text"></div>
+          <p class="live-status" id="q-status" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="live-quit-row" id="quit-row" hidden>
+        <button type="button" class="ch-btn danger" id="quit-btn">Quit match</button>
+      </div>
+
+      <!-- final result -->
+      <div id="result" hidden>
+        <div class="panel result-hero">
+          <h2 id="r-title"></h2>
+          <p id="r-sub"></p>
+          <div class="vs" id="r-vs"></div>
+          <div class="result-actions">
+            <a class="btn btn-primary" href="challenges.html">Back to Challenges</a>
+            <a class="btn btn-grey" href="challenges.html#leaderboard">Leaderboard</a>
+          </div>
+        </div>
+        <h2 class="ch-section" style="margin-top:1.5rem">Answer review</h2>
+        <ul class="rv" id="r-review"></ul>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="modal" id="quit-modal" aria-labelledby="quit-title">
+    <div class="modal-head">
+      <h2 id="quit-title">Quit the game?</h2>
+      <button type="button" class="modal-close" id="quit-close" aria-label="Close">&times;</button>
+    </div>
+    <p class="pick-note" id="quit-text"></p>
+    <p class="auth-message" id="quit-message" role="status" aria-live="polite"></p>
+    <div class="quit-actions">
+      <button type="button" class="btn btn-primary" id="quit-stay">Keep playing</button>
+      <button type="button" class="btn quit-go" id="quit-go">Quit and lose</button>
+    </div>
+  </dialog>
+
+  <script type="module" src="js/live.js"></script>
+</body>
+</html>

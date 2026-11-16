@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security and Access — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/admin-panel.css">
+</head>
+<body>
+  <div class="a-app">
+    <aside id="a-side"></aside>
+
+    <main class="a-main">
+      <h1>Security and Access</h1>
+      <p class="a-sub">Control admin access and monitor account security.</p>
+      <p class="a-msg" id="a-message" role="status" aria-live="polite"></p>
+
+      <div class="a-grid">
+        <section class="a-card" aria-labelledby="admins-title">
+          <div class="a-card-head">
+            <h2 id="admins-title">Administrator accounts</h2>
+            <button type="button" class="a-btn primary" id="add-admin" hidden>Add admin</button>
+          </div>
+          <div id="admins"></div>
+          <p class="a-note" id="admins-note"></p>
+        </section>
+
+        <div style="display:grid;gap:1.1rem;align-content:start">
+          <section class="a-card" aria-labelledby="alerts-title">
+            <h2 id="alerts-title">Security alerts</h2>
+            <div id="alerts"><p class="a-empty" style="padding:0">Loading...</p></div>
+            <p class="a-note" id="alerts-note">Emails with 5 or more failed logins in the last 24 hours.</p>
+          </section>
+
+          <section class="a-card" aria-labelledby="access-title">
+            <h2 id="access-title">Access settings</h2>
+            <div class="a-toggle-row">
+              <span id="alerts-label">Email alerts for admin logins<small class="a-toggle-help">Emails an administrator each time their account signs in.</small></span>
+              <button type="button" class="a-switch" id="login-alerts" role="switch" aria-checked="false" aria-labelledby="alerts-label" disabled></button>
+            </div>
+            <div id="admin-logins"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="modal" id="add-modal" aria-labelledby="add-title">
+    <div class="modal-head">
+      <h2 id="add-title">Add an administrator</h2>
+      <button type="button" class="modal-close" id="add-close" aria-label="Close">&times;</button>
+    </div>
+    <p class="pick-note">The person must already have a StudyTrack account. Ask them to sign up first, then enter the same email here.</p>
+    <form id="add-form">
+      <div class="field">
+        <label for="add-email">Email</label>
+        <input type="email" id="add-email" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="add-role">Role</label>
+        <select id="add-role">
+          <option value="admin">Admin: manages student accounts</option>
+          <option value="super_admin">Super Admin: also adds and removes administrators</option>
+        </select>
+      </div>
+      <p class="auth-message" id="add-message" role="status" aria-live="polite"></p>
+      <button type="submit" class="btn btn-primary" id="add-go">Add administrator</button>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/admin-security.js"></script>
+</body>
+</html>

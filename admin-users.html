@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User Management — Student StudyTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/admin-panel.css">
+</head>
+<body>
+  <div class="a-app">
+    <aside id="a-side"></aside>
+
+    <main class="a-main">
+      <h1>User Management</h1>
+      <p class="a-sub">Search, review and manage student accounts.</p>
+      <p class="a-msg" id="a-message" role="status" aria-live="polite"></p>
+
+      <div class="a-toolbar">
+        <label class="a-search">
+          <span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search users</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input type="search" id="search" placeholder="Search by name or email...">
+        </label>
+        <div class="a-toolbar" style="margin:0" role="group" aria-label="Filter by status" id="chips">
+          <button type="button" class="a-chip" data-status="all" aria-pressed="true">All</button>
+          <button type="button" class="a-chip" data-status="active" aria-pressed="false">Active</button>
+          <button type="button" class="a-chip" data-status="inactive" aria-pressed="false">Inactive</button>
+          <button type="button" class="a-chip" data-status="suspended" aria-pressed="false">Suspended</button>
+          <button type="button" class="a-chip" data-status="pending_deletion" aria-pressed="false">Pending Deletion</button>
+        </div>
+        <select class="a-sort" id="sort" aria-label="Sort users">
+          <option value="newest">Sort by: Newest</option>
+          <option value="oldest">Sort by: Oldest</option>
+          <option value="name">Sort by: Name A–Z</option>
+          <option value="last_active">Sort by: Last active</option>
+        </select>
+      </div>
+
+      <section class="a-card flush" aria-label="Student accounts">
+        <div class="a-scroll">
+          <table class="a-list">
+            <thead>
+              <tr>
+                <th scope="col">User</th>
+                <th scope="col">Email</th>
+                <th scope="col">Registered</th>
+                <th scope="col">Last active</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div class="a-foot">
+          <span id="showing"></span>
+          <div class="a-pages" id="pages"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="js/admin-users.js"></script>
+</body>
+</html>

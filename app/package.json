@@ -1,0 +1,31 @@
+{
+  "name": "studytrack-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Student StudyTrack as an Android app (Capacitor). The app is built from the website files in the folder above.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-web.mjs",
+    "sync": "npm run build && npx cap sync android",
+    "open": "npx cap open android",
+    "icons": "npx @capacitor/assets generate --android --iconBackgroundColor \"#ff9d2e\" --splashBackgroundColor \"#fff6ea\""
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/core": "^8.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.0.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "esbuild": "^0.25.0",
+    "pdfjs-dist": "4.4.168"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "sharp@0.32.6": true
+  }
+}
