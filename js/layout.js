@@ -20,6 +20,13 @@ export async function requireUser(options = {}) {
   const { data } = await supabase.rpc('my_account_state'); // also records that the student was active
   if (data) accountState = data;
 
+  // administrators use the admin panel; student pages send them there (settings → their admin profile)
+  const here = window.location.pathname.split('/').pop() || 'index.html';
+  if (accountState.is_admin && !isApp() && !/^admin.*\.html$/.test(here)) {
+    window.location.replace(here === 'settings.html' ? 'admin-profile.html' : 'admin.html');
+    return null;
+  }
+
   // the Android app is for students; administrators use the website
   if (isApp() && accountState.is_admin) {
     await supabase.auth.signOut();
@@ -138,7 +145,6 @@ export function renderNav(active, profile) {
     ['statistics', 'Statistics', 'statistics.html'],
     ['challenges', 'Challenges', 'challenges.html'],
   ];
-  if (accountState.is_admin && !isApp()) links.push(['admin', 'Admin', 'admin.html']);   // the admin panel is website-only
 
   // challenges waiting for my turn + friend requests, shown as a number next to "Challenges"
   const waiting = Number(accountState.challenges_waiting || 0) + Number(accountState.friend_requests || 0);

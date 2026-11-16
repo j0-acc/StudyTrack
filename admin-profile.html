@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Profile — Student StudyTrack Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/decks.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <link rel="stylesheet" href="css/admin-panel.css">
+</head>
+<body>
+  <div class="a-app">
+    <aside id="a-side"></aside>
+
+    <main class="a-main">
+      <h1>My Profile</h1>
+      <p class="a-sub">Your administrator photo, name and password.</p>
+
+      <div class="a-grid a-profile-grid">
+        <section class="a-card settings-card" aria-labelledby="profile-title">
+          <h2 id="profile-title">Profile</h2>
+          <div class="profile-row">
+            <div class="avatar-lg" id="avatar-big" aria-hidden="true"></div>
+            <div class="avatar-actions">
+              <button type="button" class="link-blue" id="photo-btn">Change photo</button>
+              <span class="hint">JPG, PNG or WebP, under 8 MB</span>
+              <input type="file" id="photo-input" accept="image/png,image/jpeg,image/webp" hidden>
+            </div>
+          </div>
+          <p class="auth-message" id="photo-message" role="status" aria-live="polite"></p>
+
+          <form id="profile-form" novalidate>
+            <div class="field">
+              <label for="full-name">Full name</label>
+              <input id="full-name" type="text" maxlength="120" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="email">Email address</label>
+              <input id="email" type="email" readonly aria-describedby="email-hint">
+            </div>
+            <div class="field">
+              <label for="role">Role</label>
+              <input id="role" type="text" readonly>
+            </div>
+            <p class="hint" id="email-hint">The email and role can't be changed here.</p>
+            <button type="submit" class="btn btn-primary" id="profile-save">Save changes</button>
+            <p class="auth-message" id="profile-message" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="a-card settings-card" aria-labelledby="password-title">
+          <h2 id="password-title">Change password</h2>
+          <form id="password-form" novalidate>
+            <div class="field">
+              <label for="current-pw">Current password</label>
+              <div class="input-wrap">
+                <input id="current-pw" type="password" autocomplete="current-password">
+                <button type="button" class="toggle-pw" data-target="current-pw" aria-label="Show password">Show</button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="new-pw">New password</label>
+              <div class="input-wrap">
+                <input id="new-pw" type="password" autocomplete="new-password" aria-describedby="pw-hint">
+                <button type="button" class="toggle-pw" data-target="new-pw" aria-label="Show password">Show</button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="confirm-pw">Confirm new password</label>
+              <div class="input-wrap">
+                <input id="confirm-pw" type="password" autocomplete="new-password">
+                <button type="button" class="toggle-pw" data-target="confirm-pw" aria-label="Show password">Show</button>
+              </div>
+            </div>
+            <p class="hint" id="pw-hint">At least 8 characters.</p>
+            <button type="submit" class="btn btn-primary" id="password-save">Update password</button>
+            <p class="auth-message" id="password-message" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/admin-profile.js"></script>
+</body>
+</html>

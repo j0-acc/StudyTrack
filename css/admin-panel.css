@@ -279,3 +279,7 @@ button.a-switch:focus-visible { outline: 3px solid var(--blue); outline-offset: 
 .a-me { display: flex; align-items: center; gap: 0.6rem; color: inherit; text-decoration: none; border-radius: 999px; min-width: 0; }
 .a-me:hover .a-name, .a-me:focus-visible .a-name { text-decoration: underline; }
 @media (pointer: coarse) { .a-me { min-height: 40px; } }
+.a-me[aria-current="page"] .a-name { color: var(--blue); }
+.a-profile-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+.a-profile-grid .settings-card { max-width: none; }
+@media (max-width: 960px) { .a-profile-grid { grid-template-columns: 1fr; } }

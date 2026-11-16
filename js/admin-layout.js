@@ -251,7 +251,7 @@ function drawSidebar(active, profile, role) {
     </div>
     <nav class="a-nav" aria-label="Administrator"></nav>
     <div class="a-user">
-      <a class="a-me" href="settings.html" title="My profile: photo, name and password">
+      <a class="a-me" href="admin-profile.html" title="My profile: photo, name and password"${active === 'profile' ? ' aria-current="page"' : ''}>
         <span class="avatar" id="a-avatar"></span>
         <span class="a-name" id="a-name"></span>
       </a>
