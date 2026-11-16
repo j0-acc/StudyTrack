@@ -30,7 +30,7 @@ form.addEventListener('submit', async (e) => {
   // Check the form before calling Supabase
   if (!fullName) return show('Enter your full name.', 'error');
   if (!/^\S+@\S+\.\S+$/.test(email)) return show('Enter a valid email address.', 'error');
-  if (password.length < 6) return show('Password must be at least 6 characters.', 'error');
+  if (password.length < 8) return show('Password must be at least 8 characters.', 'error');
   if (password !== confirm) return show('Passwords do not match.', 'error');
 
   submitBtn.disabled = true;

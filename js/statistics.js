@@ -1,6 +1,9 @@
 import { supabase } from './supabase.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
 
+// a deck colour from the database is only used if it is a real #RRGGBB colour
+const safeColor = (c) => (/^#[0-9a-f]{6}$/i.test(c || '') ? c : '#FF9D2E');
+
 const user = await requireUser();
 if (user) start();
 
@@ -287,7 +290,10 @@ async function loadSubjects() {
 
     const track = document.createElement('div');
     track.className = 'track';
-    track.innerHTML = `<span style="width:${pct}%;background:${d.color_tag}"></span>`;
+    const fill = document.createElement('span');
+    fill.style.width = `${pct}%`;
+    fill.style.background = safeColor(d.color_tag);
+    track.appendChild(fill);
 
     const value = document.createElement('span');
     value.className = 'pct';

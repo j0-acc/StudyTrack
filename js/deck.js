@@ -2,6 +2,9 @@ import { supabase } from './supabase.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
 import { setupAI } from './deck-ai.js';
 
+// a deck colour from the database is only used if it is a real #RRGGBB colour
+const safeColor = (c) => (/^#[0-9a-f]{6}$/i.test(c || '') ? c : '#FF9D2E');
+
 const user = await requireUser();
 const deckId = new URLSearchParams(window.location.search).get('id');
 if (user) start();
@@ -50,7 +53,7 @@ function renderHeader() {
   document.title = `${deck.title} — Student StudyTrack`;
   const chip = document.getElementById('deck-chip');
   chip.textContent = deck.title;
-  chip.style.background = deck.color_tag + '40';
+  chip.style.background = safeColor(deck.color_tag) + '40';
   document.getElementById('deck-desc').textContent = deck.description || '';
 }
 
@@ -182,11 +185,19 @@ function openEdit() {
   document.getElementById('edit-desc').value = deck.description || '';
   const box = document.getElementById('edit-swatches');
   box.innerHTML = '';
-  const colors = COLORS.includes(deck.color_tag) ? COLORS : [deck.color_tag, ...COLORS];
+  const current = safeColor(deck.color_tag);
+  const colors = COLORS.includes(current) ? COLORS : [current, ...COLORS];
   colors.forEach((color) => {
     const label = document.createElement('label');
     label.className = 'swatch';
-    label.innerHTML = `<input type="radio" name="color" value="${color}" ${color === deck.color_tag ? 'checked' : ''}><span style="background:${color}"></span>`;
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'color';
+    input.value = color;
+    input.checked = color === current;
+    const dot = document.createElement('span');
+    dot.style.background = color;
+    label.append(input, dot);
     box.appendChild(label);
   });
   editMessage.textContent = '';

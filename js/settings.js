@@ -140,7 +140,7 @@ async function changePassword(e) {
   const confirm = $('confirm-pw').value;
 
   if (!current) return say('password-message', 'Enter your current password.', 'error');
-  if (next.length < 6) return say('password-message', 'The new password must be at least 6 characters.', 'error');
+  if (next.length < 8) return say('password-message', 'The new password must be at least 8 characters.', 'error');
   if (next !== confirm) return say('password-message', 'The new passwords do not match.', 'error');
   if (next === current) return say('password-message', 'Choose a password that is different from your current one.', 'error');
 

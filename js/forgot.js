@@ -47,7 +47,7 @@ $('reset-form').addEventListener('submit', async (e) => {
   const token = cleanCode($('code').value);
   const password = $('password').value;
   if (token.length < 6) return show('Enter the 6-digit code from the email.', 'error');
-  if (password.length < 6) return show('The new password must be at least 6 characters.', 'error');
+  if (password.length < 8) return show('The new password must be at least 8 characters.', 'error');
   if (password !== $('confirm').value) return show('The passwords do not match.', 'error');
 
   $('reset-btn').disabled = true;

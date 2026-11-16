@@ -1,0 +1,19 @@
+# Netlify settings for the StudyTrack website.
+# Only the website files are published (the HTML pages, css/, js/ and assets/).
+# The database files, the Android app folder, the Supabase functions and the guides stay private in GitHub.
+
+[build]
+  command = "rm -rf dist && mkdir dist && cp -r *.html css js assets dist/"
+  publish = "dist"
+
+# basic browser security for every page
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    # only StudyTrack, Supabase, the jsDelivr libraries (Supabase + PDF reader) and Google Fonts may load
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://otsoyrryjiupbuabskje.supabase.co; connect-src 'self' https://otsoyrryjiupbuabskje.supabase.co wss://otsoyrryjiupbuabskje.supabase.co https://cdn.jsdelivr.net; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"

@@ -1,10 +1,13 @@
 import { supabase } from './supabase.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
 
+// a deck colour from the database is only used if it is a real #RRGGBB colour
+const safeColor = (c) => (/^#[0-9a-f]{6}$/i.test(c || '') ? c : '#FF9D2E');
+
 const user = await requireUser();
 if (user) start();
 
-// A deck counts as "Mastered" at or above this percentage (change to suit your group)
+// A deck counts as "Mastered" at or above this percentage (group decided: 100)
 const MASTERED_AT = 100;
 const COLORS = ['#FF9D2E', '#2F9BF0', '#2FBF71', '#B9A7F0', '#FF8FB1'];
 
@@ -62,7 +65,7 @@ function render() {
     const a = document.createElement('a');
     a.className = 'deck-card';
     a.href = `deck.html?id=${d.id}`;
-    a.style.background = d.color_tag + '33';
+    a.style.background = safeColor(d.color_tag) + '33';
 
     const title = document.createElement('h2');
     title.textContent = d.title;
@@ -73,7 +76,10 @@ function render() {
 
     const bar = document.createElement('div');
     bar.className = 'bar';
-    bar.innerHTML = `<span style="width:${d.mastery}%;background:${d.color_tag}"></span>`;
+    const fill = document.createElement('span');
+    fill.style.width = `${Number(d.mastery) || 0}%`;
+    fill.style.background = safeColor(d.color_tag);
+    bar.appendChild(fill);
 
     const meta = document.createElement('small');
     meta.textContent = `${plural(d.cards, 'card')} • ${d.mastery}% mastered`;
@@ -111,12 +117,26 @@ function wireEvents() {
 }
 
 // ---------- Add Deck popup ----------
+function swatchInput(color, checked) {
+  const input = document.createElement('input');
+  input.type = 'radio';
+  input.name = 'color';
+  input.value = color;
+  input.checked = checked;
+  return input;
+}
+function swatchDot(color) {
+  const dot = document.createElement('span');
+  dot.style.background = color;
+  dot.title = color;
+  return dot;
+}
 function buildSwatches() {
   const box = document.getElementById('swatches');
   COLORS.forEach((color, i) => {
     const label = document.createElement('label');
     label.className = 'swatch';
-    label.innerHTML = `<input type="radio" name="color" value="${color}" ${i === 0 ? 'checked' : ''}><span style="background:${color}" title="${color}"></span>`;
+    label.append(swatchInput(color, i === 0), swatchDot(color));
     box.appendChild(label);
   });
 }
