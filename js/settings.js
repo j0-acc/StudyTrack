@@ -199,6 +199,8 @@ function wireEvents() {
   });
 
   const modal = $('delete-modal');
+  // administrators don't use the student deletion request (another super admin manages admin accounts)
+  if (getAccountState().is_admin) $('delete-open').hidden = true;
   if (getAccountState().deletion_status === 'pending') {
     $('delete-open').textContent = 'Deletion requested';
     $('delete-open').disabled = true;

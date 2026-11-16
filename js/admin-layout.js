@@ -1,6 +1,6 @@
 // Shared by every administrator page: login/admin check, the sidebar, the confirm popup, and small helpers
 import { supabase } from './supabase.js';
-import { requireUser, loadProfile, getAccountState } from './layout.js';
+import { requireUser, loadProfile, getAccountState, fillAvatar } from './layout.js';
 
 const PAGES = [
   ['dashboard', 'Dashboard', 'admin.html'],
@@ -251,8 +251,10 @@ function drawSidebar(active, profile, role) {
     </div>
     <nav class="a-nav" aria-label="Administrator"></nav>
     <div class="a-user">
-      <span class="avatar" id="a-avatar"></span>
-      <span class="a-name" id="a-name"></span>
+      <a class="a-me" href="settings.html" title="My profile: photo, name and password">
+        <span class="avatar" id="a-avatar"></span>
+        <span class="a-name" id="a-name"></span>
+      </a>
       <span class="a-badge" id="a-role"></span>
       <button type="button" class="a-signout" id="a-signout">Sign out</button>
     </div>`;
@@ -275,7 +277,7 @@ function drawSidebar(active, profile, role) {
   const name = profile.full_name || 'Admin';
   document.getElementById('a-name').textContent = name;
   document.getElementById('a-role').textContent = role === 'super_admin' ? 'Super Admin' : 'Admin';
-  document.getElementById('a-avatar').textContent = name.charAt(0).toUpperCase();
+  fillAvatar(document.getElementById('a-avatar'), profile.avatar_url, name); // profile photo, or the first letter
   document.getElementById('a-signout').addEventListener('click', async () => {
     await supabase.auth.signOut({ scope: 'local' }); // only this device; other phones/tabs stay logged in
     window.location.href = 'login.html';

@@ -125,3 +125,9 @@
   button.a-switch::after { width: 24px; height: 24px; }
   button.a-switch.on::after { transform: translateX(22px); }
 }
+
+/* phones: the Offline / Syncing pill sits on the top edge of the bar, so the profile photo stays beside the logo */
+@media (max-width: 800px) {
+  .nav { position: relative; }
+  .offline-pill { position: absolute; top: -0.7rem; right: 1rem; font-size: 0.68rem; padding: 0.2rem 0.6rem; box-shadow: var(--shadow); z-index: 2; }
+}
