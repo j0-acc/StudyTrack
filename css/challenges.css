@@ -225,3 +225,13 @@ dialog select:focus { outline: none; border-color: var(--orange); box-shadow: 0 
 #friends-field legend small { font-weight: 400; color: var(--ink-soft); }
 .g-friends label { justify-content: flex-start; text-align: left; }
 .g-friends input[type="checkbox"] { flex: none; width: 18px; height: 18px; min-height: 0; padding: 0; margin: 0; box-shadow: none; }
+
+/* how-to-play choices: one wide row each (icon, title, short line) */
+.mode-pick.rows { grid-template-columns: 1fr; gap: 0.5rem; }
+.mode-pick.rows button { display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0.9rem; min-height: 0; border-radius: 14px; }
+.mode-pick.rows .mp-icon { flex: none; width: 2.1rem; height: 2.1rem; display: grid; place-items: center; border-radius: 10px; background: #fff3e2; font-size: 1.05rem; }
+.mode-pick.rows button[aria-checked="true"] .mp-icon { background: #ffe0b3; }
+.mode-pick.rows .mp-text { flex: 1; min-width: 0; }
+.mode-pick.rows strong { display: block; font-size: var(--fs-small); }
+.mode-pick.rows small { display: block; margin-top: 0.05rem; line-height: 1.35; }
+.mode-pick.rows button[aria-checked="true"]::after { content: "✓"; flex: none; color: var(--orange-deep); font-weight: 700; }

@@ -111,10 +111,10 @@
     <form id="new-form" novalidate>
       <div class="field">
         <span class="field-label" id="mode-label">How do you want to play?</span>
-        <div class="mode-pick three" role="radiogroup" aria-labelledby="mode-label" id="new-mode">
-          <button type="button" role="radio" data-mode="live" aria-checked="true"><strong>⚡ Live duel</strong><small>1 vs 1 at the same time. Your friend must be online.</small></button>
-          <button type="button" role="radio" data-mode="group" aria-checked="false"><strong>👥 Group match</strong><small>3–4 players live. Invite 2 or 3 friends.</small></button>
-          <button type="button" role="radio" data-mode="send" aria-checked="false"><strong>✉️ Send challenge</strong><small>Play now, your friend plays within 24 hours.</small></button>
+        <div class="mode-pick rows" role="radiogroup" aria-labelledby="mode-label" id="new-mode">
+          <button type="button" role="radio" data-mode="live" aria-checked="true"><span class="mp-icon" aria-hidden="true">⚡</span><span class="mp-text"><strong>Live duel</strong><small>1 vs 1 at the same time. Friend must be online.</small></span></button>
+          <button type="button" role="radio" data-mode="group" aria-checked="false"><span class="mp-icon" aria-hidden="true">👥</span><span class="mp-text"><strong>Group match</strong><small>3–4 players live. Invite 2 or 3 friends.</small></span></button>
+          <button type="button" role="radio" data-mode="send" aria-checked="false"><span class="mp-icon" aria-hidden="true">✉️</span><span class="mp-text"><strong>Send challenge</strong><small>Play now; your friend plays within 24 hours.</small></span></button>
         </div>
       </div>
       <div class="field" id="friend-field">
