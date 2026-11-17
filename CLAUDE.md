@@ -97,6 +97,8 @@ app/                   Capacitor project: scripts/build-web.mjs copies the websi
   (`consume_ai_quota`, AI_DAILY_LIMIT, default 20). `{mode:'read', images}` reads scanned PDF pages
   (max 10 per request, one quota each; deck-ai.js sends up to 30 per import in groups of 10).
   Text limit is 30,000 characters (MAX_TEXT in deck-ai.js and the function).
+- No browser `confirm()`/`alert()` on student pages: use `askConfirm({title,text,ok,danger})` / `showMessage()`
+  from js/dialog.js (styled in app.css). The admin panel has its own confirm popup in admin-layout.js.
 - Deck page: **Select** turns on multi-delete (checkboxes, Select all, one `delete().in('id', ids)`).
 - **PDF import:** pdf.js reads text pages on the device and cleans them (pdf-clean.js); pages with no
   text become JPEGs sent to `mode:'read'`. Offline: text and page images are saved on the device

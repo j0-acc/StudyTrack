@@ -1,6 +1,7 @@
 import { supabase } from './supabase.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
 import { isOffline, isNetworkError, queueNoteSave, queueNoteDelete, withPendingNotes } from './offline.js';
+import { askConfirm } from './dialog.js';
 
 const user = await requireUser();
 if (user) start();
@@ -335,7 +336,7 @@ async function saveAndClose() {
 
 async function deleteNote() {
   if (!editing) return;
-  if (!window.confirm(`Delete "${editing.title}"? Cards and quizzes made from it will stay in their decks.`)) return;
+  if (!await askConfirm({ title: 'Delete this note?', text: `"${editing.title}" will be deleted. Cards and quizzes made from it will stay in their decks.`, ok: 'Delete', danger: true })) return;
   let { error } = editing._pending || isOffline()
     ? { error: { message: 'offline' } }
     : await supabase.from('notes').delete().eq('id', editing.id);

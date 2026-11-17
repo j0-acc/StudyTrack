@@ -1,5 +1,6 @@
 import { supabase } from './supabase.js';
 import { isApp, isOffline, pendingCount } from './offline.js';
+import { showMessage } from './dialog.js';
 
 // What the database says about this account (admin? waiting for deletion?)
 let accountState = { is_admin: false, deletion_status: null, scheduled_for: null };
@@ -217,7 +218,7 @@ export function renderNav(active, profile) {
       const { error } = await supabase.rpc('cancel_deletion_request');
       if (error) {
         cancel.disabled = false;
-        window.alert(error.message);
+        showMessage('Could not cancel the request', error.message);
         return;
       }
       window.location.reload();

@@ -131,3 +131,22 @@
   .nav { position: relative; }
   .offline-pill { position: absolute; top: -0.7rem; right: 1rem; font-size: 0.68rem; padding: 0.2rem 0.6rem; box-shadow: var(--shadow); z-index: 2; }
 }
+
+/* in-app confirm / message box (js/dialog.js) */
+dialog.st-confirm {
+  border: 0; border-radius: 20px; padding: 1.5rem 1.5rem 1.25rem; width: min(380px, calc(100% - 2rem));
+  box-shadow: 0 20px 60px rgba(60, 35, 5, 0.3); color: var(--ink); text-align: center;
+}
+dialog.st-confirm::backdrop { background: rgba(35, 39, 51, 0.45); }
+dialog.st-confirm[open] { animation: st-pop 0.16s ease-out; }
+@keyframes st-pop { from { transform: scale(0.94); opacity: 0; } to { transform: none; opacity: 1; } }
+.st-confirm-icon { width: 2.6rem; height: 2.6rem; margin: 0 auto 0.75rem; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 1.2rem; background: #fff3e2; color: var(--orange-deep); }
+.st-confirm-icon.danger { background: #fde8e6; color: #d92d20; }
+dialog.st-confirm h2 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+dialog.st-confirm p { margin: 0 0 1.1rem; font-size: var(--fs-small); color: var(--ink-soft); line-height: 1.5; overflow-wrap: anywhere; }
+.st-confirm-actions { display: flex; gap: 0.6rem; justify-content: center; margin-top: 1rem; }
+.st-confirm-actions .btn { flex: 1; justify-content: center; min-height: 42px; }
+.st-btn-danger { background: #e04b3d; border: 1px solid #e04b3d; color: #fff; }
+.st-btn-danger:hover { background: #c83c2f; }
+@media (prefers-reduced-motion: reduce) { dialog.st-confirm[open] { animation: none; } }
+.st-confirm-actions .btn-grey { background: #eef0f3; border: 1px solid #eef0f3; color: var(--ink); }

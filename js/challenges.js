@@ -1,5 +1,6 @@
 import { supabase } from './supabase.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
+import { askConfirm } from './dialog.js';
 
 const $ = (id) => document.getElementById(id);
 const TABS = ['challenges', 'friends', 'leaderboard'];
@@ -187,7 +188,7 @@ async function loadChallenges() {
     actions.appendChild(linkBtn(c.my_started ? 'Continue' : 'Play', 'primary', `challenge-play.html?id=${c.id}`));
     if (c.status === 'open' && !c.my_started) {
       actions.appendChild(btn('Decline', '', async () => {
-        if (!window.confirm(`Decline ${c.other_name}'s challenge? Nobody gets points.`)) return;
+        if (!await askConfirm({ title: 'Decline this challenge?', text: `${c.other_name}'s challenge will be closed. Nobody gets points.`, ok: 'Decline', danger: true })) return;
         const { error: e } = await supabase.rpc('decline_challenge', { p_id: c.id });
         if (e) return say(e.message, 'error');
         say('Challenge declined.', 'ok');
@@ -285,7 +286,7 @@ async function loadChallenges() {
 }
 
 async function cancel(c) {
-  if (!window.confirm(`Cancel your challenge to ${c.other_name}?`)) return;
+  if (!await askConfirm({ title: 'Cancel this challenge?', text: `Your challenge to ${c.other_name} will be removed.`, ok: 'Cancel challenge', cancel: 'Keep it', danger: true })) return;
   const { error } = await supabase.rpc('cancel_challenge', { p_id: c.id });
   if (error) return say(error.message, 'error');
   say('Challenge cancelled.', 'ok');
@@ -340,7 +341,7 @@ async function loadFriends() {
       btn('Play live', 'primary', () => openNew(f.user_id, 'live')),
       btn('Challenge', '', () => openNew(f.user_id, 'send')),
       btn('Remove', 'danger', async () => {
-        if (!window.confirm(`Remove ${f.full_name} from your friends?`)) return;
+        if (!await askConfirm({ title: 'Remove friend?', text: `${f.full_name} will be removed from your friends list.`, ok: 'Remove', danger: true })) return;
         const { error: e } = await supabase.rpc('remove_friend', { p_user_id: f.user_id });
         if (e) return say(e.message, 'error');
         say(`${f.full_name} was removed from your friends.`, 'ok');

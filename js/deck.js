@@ -1,6 +1,7 @@
 import { supabase } from './supabase.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
 import { setupAI } from './deck-ai.js';
+import { askConfirm, showMessage } from './dialog.js';
 
 // a deck colour from the database is only used if it is a real #RRGGBB colour
 const safeColor = (c) => (/^#[0-9a-f]{6}$/i.test(c || '') ? c : '#FF9D2E');
@@ -190,13 +191,13 @@ async function deleteSelected() {
   const ask = all
     ? `Delete all ${plural(ids.length, 'card')} in this deck? This can't be undone.`
     : `Delete ${plural(ids.length, 'card')}? This can't be undone.`;
-  if (!window.confirm(ask)) return;
+  if (!await askConfirm({ title: all ? 'Delete all cards?' : `Delete ${plural(ids.length, 'card')}?`, text: ask.replace(/^Delete[^?]*\? /, ''), ok: 'Delete', danger: true })) return;
   const btn = document.getElementById('delete-selected');
   btn.disabled = true;
   btn.textContent = 'Deleting...';
   const { error } = await supabase.from('cards').delete().in('id', ids).eq('deck_id', deckId);
   if (error) {
-    window.alert(error.message);
+    await showMessage('Could not delete the cards', error.message);
     updateSelectBar();
     return;
   }
@@ -218,9 +219,10 @@ function wireSelect() {
 }
 
 async function deleteCard(id) {
-  if (!window.confirm('Delete this card?')) return;
+  const card = cards.find((c) => c.id === id);
+  if (!await askConfirm({ title: 'Delete this card?', text: card ? `"${card.front_text}" will be removed from this deck. This can't be undone.` : "This can't be undone.", ok: 'Delete', danger: true })) return;
   const { error } = await supabase.from('cards').delete().eq('id', id);
-  if (error) return window.alert(error.message);
+  if (error) return showMessage('Could not delete the card', error.message);
   await loadCards();
 }
 
@@ -321,7 +323,7 @@ async function saveEdit(e) {
 }
 
 async function deleteDeck() {
-  const ok = window.confirm(`Delete "${deck.title}" and all of its cards? This cannot be undone.`);
+  const ok = await askConfirm({ title: 'Delete this deck?', text: `"${deck.title}" and all of its cards will be deleted. This can't be undone.`, ok: 'Delete deck', danger: true });
   if (!ok) return;
   const { error } = await supabase.from('decks').delete().eq('id', deckId);
   if (error) {

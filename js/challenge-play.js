@@ -1,5 +1,6 @@
 import { supabase } from './supabase.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
+import { askConfirm } from './dialog.js';
 
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(window.location.search);
@@ -176,7 +177,7 @@ function drawDots() {
 
 async function submit() {
   const left = answers.filter((a) => !answered(a)).length;
-  if (left && !window.confirm(`You have ${left} unanswered question${left === 1 ? '' : 's'}. Submit anyway? Unanswered questions count as wrong.`)) return;
+  if (left && !await askConfirm({ title: 'Submit anyway?', text: `You have ${left} unanswered question${left === 1 ? '' : 's'}. Unanswered questions count as wrong.`, ok: 'Submit', cancel: 'Keep answering' })) return;
   $('next').disabled = true;
   const { data, error } = await supabase.rpc('submit_challenge', {
     p_id: id,

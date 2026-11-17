@@ -1,5 +1,6 @@
 import { supabase } from './supabase.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
+import { askConfirm } from './dialog.js';
 
 const user = await requireUser();
 const deckId = new URLSearchParams(window.location.search).get('id');
@@ -438,8 +439,13 @@ function wireEvents() {
   $('retry-save').addEventListener('click', saveResult);
 
   // Leaving in the middle of a quiz does not save it, so ask first
-  $('back-link').addEventListener('click', (e) => {
+  $('back-link').addEventListener('click', async (e) => {
     const inProgress = !$('question-area').hidden;
-    if (inProgress && !window.confirm('Leave this quiz? Your progress will not be saved.')) e.preventDefault();
+    if (!inProgress) return;
+    e.preventDefault();
+    const href = e.currentTarget.href;
+    if (await askConfirm({ title: 'Leave this quiz?', text: 'Your progress will not be saved.', ok: 'Leave', cancel: 'Stay', danger: true })) {
+      window.location.href = href;
+    }
   });
 }
