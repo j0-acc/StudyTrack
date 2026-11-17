@@ -93,8 +93,18 @@ form.addEventListener('submit', async (e) => {
     submitBtn.disabled = false;
     // Give a clearer message for the most common mistake
     if (error.message.toLowerCase().includes('invalid login')) {
-      // counted for Security and Access (repeated failed logins); never blocks the page
-      supabase.rpc('record_failed_login', { p_email: email }).then(() => {}, () => {});
+      // counted for Security and Access (repeated failed logins); it also tells us which part was wrong
+      let reason = null;
+      try {
+        const res = await supabase.rpc('record_failed_login', { p_email: email });
+        reason = res.data;
+      } catch (e) { /* keep the general message */ }
+      if (reason === 'wrong_password') {
+        return showWithLink('Incorrect password. Try again, or', 'reset your password', 'forgot.html');
+      }
+      if (reason === 'no_account') {
+        return showWithLink('No account uses this email. Check the spelling, or', 'sign up', 'signup.html');
+      }
       return show('Wrong email or password. Try again.', 'error');
     }
     // sign-up not finished: the email was never confirmed with the 6-digit code

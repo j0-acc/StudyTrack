@@ -373,8 +373,10 @@ async function answer(pos, text) {
   tick(true);
   const { error } = await supabase.rpc('live_answer', { p_id: id, p_position: pos, p_answer: text });
   answering = false;
-  if (error) {
-    if (!error.message.includes('already answered')) q.my_answer = null;
+  if (error && error.message.includes('already answered')) {
+    // a double tap or the timer sent it twice: the first answer counts, nothing to show
+  } else if (error) {
+    q.my_answer = null;
     say(error.message, 'error');
     setTimeout(() => say(''), 2500);
   } else if (channel) {

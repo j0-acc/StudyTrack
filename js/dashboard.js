@@ -23,12 +23,13 @@ function formatDuration(seconds) {
 }
 
 // ---------- page ----------
+let firstName = 'there';
+
 async function start() {
   const profile = await loadProfile(user.id);
   renderNav('dashboard', profile);
 
-  const firstName = (profile.full_name || 'there').split(' ')[0];
-  document.getElementById('welcome').textContent = `Welcome back, ${firstName}!`;
+  firstName = (profile.full_name || 'there').split(' ')[0];
   document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-US', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
@@ -58,6 +59,17 @@ async function loadStats() {
   document.getElementById('total-time').textContent = formatDuration(totalSeconds);
   document.getElementById('best-streak').textContent = `${streak.best_streak}d`;
   document.getElementById('current-streak').textContent = plural(currentStreak, 'day');
+
+  // greeting: new users haven't studied yet, so no "welcome back" or "continue"
+  const isNew = totalSeconds === 0 && !streak.best_streak && !streak.last_activity_date;
+  const studiedToday = streak.last_activity_date === iso(now);
+  document.getElementById('welcome').textContent = isNew ? `Welcome, ${firstName}!` : `Welcome back, ${firstName}!`;
+  document.getElementById('banner-tag').textContent = isNew
+    ? "Let's start your first study session."
+    : studiedToday ? 'Nice work today. Keep the streak alive!'
+    : currentStreak > 0 ? 'Study today to keep the streak alive!'
+    : 'Start a new streak today!';
+  document.getElementById('banner-btn').textContent = isNew ? 'Start studying' : 'Continue studying';
 }
 
 // Topic chips + subject cards (cards, notes and mastery counted per deck)
