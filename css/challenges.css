@@ -187,3 +187,41 @@ dialog select:focus { outline: none; border-color: var(--orange); box-shadow: 0 
   .ch-head .btn { grid-column: 2; grid-row: 1; margin: 0; white-space: nowrap; }
   .ch-head .page-head p { grid-column: 1 / -1; margin-top: 0.35rem; }
 }
+
+/* ---------- group matches (3–4 players) ---------- */
+.g-board { background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow); padding: 0.7rem 1rem; margin-bottom: 0.9rem; }
+.g-board-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
+.g-board-head span { font-weight: 700; font-size: var(--fs-small); }
+.g-board-head small { color: var(--ink-soft); font-size: 0.72rem; overflow-wrap: anywhere; }
+.g-scores { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.4rem; }
+.g-scores li { display: flex; align-items: center; gap: 0.45rem; background: #fffaf2; border-radius: var(--radius-sm, 10px); padding: 0.35rem 0.55rem; min-width: 0; }
+.g-scores li.me { background: #fff1dc; }
+.g-scores li.gone { opacity: 0.55; }
+.g-scores .g-name { flex: 1; min-width: 0; font-size: 0.78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g-scores strong { font-variant-numeric: tabular-nums; }
+.g-scores li.me strong { color: var(--orange-deep); }
+.g-check { color: #2f9e5b; font-weight: 700; font-size: 0.8rem; }
+.g-lobby { list-style: none; padding: 0; margin: 1rem auto; max-width: 420px; display: grid; gap: 0.45rem; text-align: left; }
+.g-lobby li { display: flex; align-items: center; gap: 0.6rem; background: #fffaf2; border-radius: var(--radius-md); padding: 0.55rem 0.8rem; }
+.g-lobby li span:first-of-type { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.g-state { font-size: 0.75rem; font-weight: 700; border-radius: 999px; padding: 0.1rem 0.55rem; background: #eef0f3; color: var(--ink-soft); white-space: nowrap; }
+.g-state.joined { background: #e3f6ea; color: #1f7a45; }
+.g-state.declined, .g-state.missed, .g-state.left { background: #fbebeb; color: #a33; }
+.g-podium { list-style: none; padding: 0; margin: 1.25rem 0 0.5rem; display: grid; gap: 0.5rem; }
+.g-podium li { display: flex; align-items: center; gap: 0.75rem; background: #fffaf2; border-radius: var(--radius-md); padding: 0.7rem 0.9rem; text-align: left; }
+.g-podium li.first { background: #fff1dc; }
+.g-podium li.me { outline: 2px solid var(--orange); }
+.g-place { font-size: 1.4rem; width: 2.2rem; text-align: center; }
+.g-podium .g-who { flex: 1; min-width: 0; overflow-wrap: anywhere; font-weight: 600; }
+.g-podium .g-who small { display: block; font-weight: 400; color: var(--ink-soft); font-size: 0.75rem; }
+.g-podium strong { font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+.g-friends { display: grid; gap: 0.4rem; max-height: 220px; overflow-y: auto; border: 1.5px solid var(--line); border-radius: var(--radius-md); padding: 0.5rem 0.7rem; background: #fffdf9; }
+.g-friends label { display: flex; align-items: center; gap: 0.55rem; font-weight: 500; cursor: pointer; min-height: 36px; }
+.g-friends input { width: 18px; height: 18px; accent-color: var(--orange); }
+.mode-pick.three { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 560px) { .mode-pick.three { grid-template-columns: 1fr; } }
+#friends-field { border: 0; padding: 0; margin: 0 0 1rem; min-width: 0; }
+#friends-field legend { padding: 0; margin-bottom: 0.4rem; }
+#friends-field legend small { font-weight: 400; color: var(--ink-soft); }
+.g-friends label { justify-content: flex-start; text-align: left; }
+.g-friends input[type="checkbox"] { flex: none; width: 18px; height: 18px; min-height: 0; padding: 0; margin: 0; box-shadow: none; }

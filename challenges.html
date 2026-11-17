@@ -111,15 +111,20 @@
     <form id="new-form" novalidate>
       <div class="field">
         <span class="field-label" id="mode-label">How do you want to play?</span>
-        <div class="mode-pick" role="radiogroup" aria-labelledby="mode-label" id="new-mode">
-          <button type="button" role="radio" data-mode="live" aria-checked="true"><strong>⚡ Live now</strong><small>Play at the same time. Your friend must be online.</small></button>
+        <div class="mode-pick three" role="radiogroup" aria-labelledby="mode-label" id="new-mode">
+          <button type="button" role="radio" data-mode="live" aria-checked="true"><strong>⚡ Live duel</strong><small>1 vs 1 at the same time. Your friend must be online.</small></button>
+          <button type="button" role="radio" data-mode="group" aria-checked="false"><strong>👥 Group match</strong><small>3–4 players live. Invite 2 or 3 friends.</small></button>
           <button type="button" role="radio" data-mode="send" aria-checked="false"><strong>✉️ Send challenge</strong><small>Play now, your friend plays within 24 hours.</small></button>
         </div>
       </div>
-      <div class="field">
+      <div class="field" id="friend-field">
         <label for="new-friend">Opponent</label>
         <select id="new-friend"></select>
       </div>
+      <fieldset class="field" id="friends-field" hidden>
+        <legend class="field-label">Friends to invite <small id="friends-count">(pick 2 or 3)</small></legend>
+        <div class="g-friends" id="new-friends"></div>
+      </fieldset>
       <div class="field">
         <label for="new-deck">Deck</label>
         <select id="new-deck"></select>

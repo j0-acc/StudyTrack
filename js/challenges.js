@@ -125,10 +125,13 @@ function wireTabs() {
 
 // ---------- challenges tab ----------
 async function loadChallenges() {
-  const [chRes, liveRes] = await Promise.all([supabase.rpc('my_challenges'), supabase.rpc('my_live_matches')]);
+  const [chRes, liveRes, groupRes] = await Promise.all([supabase.rpc('my_challenges'), supabase.rpc('my_live_matches'), supabase.rpc('my_group_matches')]);
   if (chRes.error) return say(chRes.error.message, 'error');
   const data = chRes.data;
   const live = liveRes.error ? [] : liveRes.data;
+  const groups = groupRes.error ? [] : groupRes.data;
+  const groupOn = groups.filter((g) => g.status === 'lobby' || (g.status === 'playing' && g.my_state === 'joined'));
+  const groupDone = groups.filter((g) => g.status === 'finished');
 
   const turn = [];
   const waiting = [];
@@ -144,14 +147,25 @@ async function loadChallenges() {
   const liveWaiting = live.filter((m) => m.status === 'invited');
   const liveDone = live.filter((m) => m.status === 'finished');
 
-  const count = turn.length + livePlaying.length;
+  const count = turn.length + livePlaying.length + groupOn.length;
   $('count-challenges').textContent = count;
   $('count-challenges').hidden = !count;
 
   // your turn
   const tBox = $('list-turn');
-  if (!turn.length && !livePlaying.length) none(tBox, 'Nothing to play right now. Start a new challenge with a friend!');
+  if (!turn.length && !livePlaying.length && !groupOn.length) none(tBox, 'Nothing to play right now. Start a new challenge with a friend!');
   else tBox.innerHTML = '';
+  groupOn.forEach((g) => {
+    const row = el('div', 'ch-row turn');
+    row.append(avatar(g.host_name, null, g.id),
+      info(g.i_am_host ? 'Your group match' : `${g.host_name}'s group match`,
+        `${g.deck_title} · ${g.question_count} questions · ${g.status === 'lobby' ? 'waiting for players' : `${g.players} players · in progress`}`));
+    row.appendChild(el('span', 'ch-pill live', g.status === 'lobby' ? 'LOBBY' : 'LIVE'));
+    const actions = el('div', 'ch-actions');
+    actions.appendChild(linkBtn(g.status === 'lobby' ? 'Open' : 'Rejoin', 'primary', `group.html?id=${g.id}`));
+    row.appendChild(actions);
+    tBox.appendChild(row);
+  });
   livePlaying.forEach((m) => {
     const row = el('div', 'ch-row turn');
     row.append(avatar(m.other_name, m.other_avatar, m.other_id),
@@ -216,15 +230,30 @@ async function loadChallenges() {
 
   // results
   const rBox = $('list-results');
-  if (!results.length && !liveDone.length) none(rBox, 'Finished challenges will appear here.');
+  if (!results.length && !liveDone.length && !groupDone.length) none(rBox, 'Finished challenges will appear here.');
   else rBox.innerHTML = '';
   const labels = { won: 'Won', lost: 'Lost', draw: 'Draw' };
   const other = { declined: 'Declined', expired: 'Expired', cancelled: 'Cancelled' };
   const merged = [
     ...results.map((c) => ({ kind: 'challenge', at: c.completed_at || c.sent_at || c.created_at, c })),
     ...liveDone.map((m) => ({ kind: 'live', at: m.finished_at, m })),
+    ...groupDone.map((g) => ({ kind: 'group', at: g.finished_at, g })),
   ].sort((a, b) => new Date(b.at) - new Date(a.at));
-  merged.forEach(({ kind, c, m }) => {
+  const ORD = ['1st', '2nd', '3rd', '4th'];
+  merged.forEach(({ kind, c, m, g }) => {
+    if (kind === 'group') {
+      const row = el('div', 'ch-row');
+      row.append(avatar(g.host_name, null, g.id),
+        info(`Group match · ${g.players} players`,
+          `${g.deck_title} · ${shortDate(g.finished_at)} · winner: ${g.winner_names || '—'}${g.my_state === 'left' ? ' · you left' : ''}`));
+      row.appendChild(el('span', 'ch-score', `${g.my_score ?? 0} pts`));
+      row.appendChild(el('span', 'ch-pill ' + (g.my_place === 1 ? 'won' : 'muted'), ORD[(g.my_place || 4) - 1] || `#${g.my_place}`));
+      const actions = el('div', 'ch-actions');
+      actions.appendChild(linkBtn('View', '', `group.html?id=${g.id}`));
+      row.appendChild(actions);
+      rBox.appendChild(row);
+      return;
+    }
     if (kind === 'live') {
       const row = el('div', 'ch-row');
       row.append(avatar(m.other_name, m.other_avatar, m.other_id),
@@ -492,8 +521,39 @@ function setMode(m) {
   document.querySelectorAll('#new-mode [data-mode]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.mode === m)));
   $('mode-note').textContent = m === 'live'
     ? 'Your friend gets an invite on their screen and has 60 seconds to join. Questions last 15 seconds (25 for Identification); faster correct answers earn more points.'
-    : 'You play first. Your friend then has 24 hours to answer the same questions. Higher score wins; if you tie, the faster player wins.';
-  $('new-go').textContent = m === 'live' ? 'Invite to live match' : 'Start challenge';
+    : m === 'group'
+      ? 'Your friends get an invite on their screen. The match starts when everyone joins, or you can start once 2 friends are in (it starts by itself after 90 seconds). Everyone gets the same questions; faster correct answers earn more points. Group matches don\'t change the leaderboard.'
+      : 'You play first. Your friend then has 24 hours to answer the same questions. Higher score wins; if you tie, the faster player wins.';
+  $('new-go').textContent = m === 'live' ? 'Invite to live duel' : m === 'group' ? 'Invite to group match' : 'Start challenge';
+  $('friend-field').hidden = m === 'group';
+  $('friends-field').hidden = m !== 'group';
+  if (m === 'group') countPicked();
+}
+
+// group match: tick 2 or 3 friends
+function fillFriendChecks() {
+  const box = $('new-friends');
+  box.innerHTML = '';
+  if (!friends.length) { box.appendChild(el('p', 'pick-note', 'Add friends first (Friends tab).')); return; }
+  friends.forEach((f) => {
+    const label = el('label');
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.value = f.user_id;
+    cb.addEventListener('change', countPicked);
+    label.append(cb, document.createTextNode(f.full_name));
+    box.appendChild(label);
+  });
+}
+
+function pickedFriends() {
+  return [...document.querySelectorAll('#new-friends input:checked')].map((c) => c.value);
+}
+
+function countPicked() {
+  const n = pickedFriends().length;
+  document.querySelectorAll('#new-friends input').forEach((c) => { c.disabled = !c.checked && n >= 3; });
+  $('friends-count').textContent = n ? `(${n} picked · ${n + 1} players)` : '(pick 2 or 3)';
 }
 
 async function openNew(friendId, startMode) {
@@ -510,6 +570,7 @@ async function openNew(friendId, startMode) {
     friends.forEach((f) => fSel.appendChild(new Option(f.full_name, f.user_id)));
     if (friendId) fSel.value = friendId;
   }
+  fillFriendChecks();
 
   if (!decks) decks = await loadDecks();
   fillDecks();
@@ -536,19 +597,27 @@ function wireNewChallenge() {
     e.preventDefault();
     const friend = $('new-friend').value;
     const deck = $('new-deck').value;
-    if (!friend || !deck) return;
+    const group = pickedFriends();
+    if (mode === 'group' && (group.length < 2 || group.length > 3)) {
+      $('new-message').className = 'auth-message error';
+      $('new-message').textContent = 'Pick 2 or 3 friends for a group match.';
+      return;
+    }
+    if ((mode !== 'group' && !friend) || !deck) return;
     $('new-go').disabled = true;
     $('new-message').className = 'auth-message';
     $('new-message').textContent = 'Making your questions...';
     const { data, error } = mode === 'live'
       ? await supabase.rpc('create_live_match', { p_guest: friend, p_deck_id: deck, p_count: questionCount, p_type: qType })
-      : await supabase.rpc('create_challenge', { p_opponent: friend, p_deck_id: deck, p_count: questionCount, p_type: qType });
+      : mode === 'group'
+        ? await supabase.rpc('create_group_match', { p_guests: group, p_deck_id: deck, p_count: questionCount, p_type: qType })
+        : await supabase.rpc('create_challenge', { p_opponent: friend, p_deck_id: deck, p_count: questionCount, p_type: qType });
     if (error) {
       $('new-go').disabled = false;
       $('new-message').className = 'auth-message error';
       $('new-message').textContent = error.message;
       return;
     }
-    window.location.href = mode === 'live' ? `live.html?id=${data}` : `challenge-play.html?id=${data}`;
+    window.location.href = mode === 'live' ? `live.html?id=${data}` : mode === 'group' ? `group.html?id=${data}` : `challenge-play.html?id=${data}`;
   });
 }

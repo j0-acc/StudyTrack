@@ -84,6 +84,14 @@ app/                   Capacitor project: scripts/build-web.mjs copies the websi
   (`options_for` seeded by match + user + position). Matching is forgiving for Identification
   (`answer_matches`: ignores case/punctuation, allows one typo). Quitting = forfeit (loss).
   Invites pop up on any page only while the app/site is open.
+- **Group matches (3–4 players, `database/20_group_matches.sql`, group.html + js/group.js):** separate
+  tables `group_matches`, `group_players`, `group_questions`, `group_answers`; the duel tables are untouched.
+  Host invites 2–3 friends (`create_group_match`); 90 s lobby; starts when all joined, when the host taps
+  Start with ≥2 friends in, or by itself at 90 s with ≥2 (else expired). Same timing/points helpers as
+  the duel. Ranking: `rank()` by score (ties share), leavers after everyone who stayed; one player left
+  ends it early. Page state comes only from `group_state` (answers hidden until time is up).
+  `group_tidy` brings a match up to date on every read; cron `studytrack-group-matches` every 30 min.
+  Invite popup: layout.js checks `my_live_invite`, then `my_group_invite`. Not on the leaderboard.
 - **Question types:** Multiple choice, True/False, Identification, Mixed (picked per match).
 - **AI cards:** `generate-cards` with `{mode:'topic'|'text', input, count}`; daily quota
   (`consume_ai_quota`, AI_DAILY_LIMIT, default 20). `{mode:'read', images}` reads scanned PDF pages

@@ -49,7 +49,7 @@ export async function requireUser(options = {}) {
   setupPullToRefresh();
 
   // students get a popup on any page when a friend invites them to a live match
-  if (!accountState.is_admin && !/(live|challenge-play)\.html$/.test(window.location.pathname)) {
+  if (!accountState.is_admin && !/(live|group|challenge-play)\.html$/.test(window.location.pathname)) {
     watchLiveInvites(session.user.id);
   }
   return session.user;
@@ -66,6 +66,8 @@ function watchLiveInvites(userId) {
     supabase.channel(`invites-${userId}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'live_matches', filter: `guest_id=eq.${userId}` },
         () => checkLiveInvite())
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'group_players', filter: `user_id=eq.${userId}` },
+        () => checkLiveInvite())
       .subscribe();
   } catch { /* the check below still finds invites */ }
   // backup check in case Realtime is not connected
@@ -73,7 +75,8 @@ function watchLiveInvites(userId) {
 }
 
 async function checkLiveInvite() {
-  const { data } = await supabase.rpc('my_live_invite');
+  let { data } = await supabase.rpc('my_live_invite');
+  if (!data) data = (await supabase.rpc('my_group_invite')).data;   // group matches (3–4 players)
   if (!data) { hideInvite(); return; }
   if (inviteShown === data.id) return;
   showInvite(data);
@@ -97,7 +100,10 @@ function showInvite(inv) {
   box.setAttribute('aria-labelledby', 'invite-title');
   const title = document.createElement('strong');
   title.id = 'invite-title';
-  title.textContent = `⚡ ${inv.host_name} invites you to a live match`;
+  const isGroup = inv.kind === 'group';
+  title.textContent = isGroup
+    ? `👥 ${inv.host_name} invites you to a group match (${inv.players} players)`
+    : `⚡ ${inv.host_name} invites you to a live match`;
   const text = document.createElement('p');
   const row = document.createElement('div');
   row.className = 'row';
@@ -105,12 +111,12 @@ function showInvite(inv) {
   join.type = 'button';
   join.className = 'go';
   join.textContent = 'Join';
-  join.addEventListener('click', () => { window.location.href = `live.html?id=${inv.id}&join=1`; });
+  join.addEventListener('click', () => { window.location.href = `${isGroup ? 'group' : 'live'}.html?id=${inv.id}&join=1`; });
   const no = document.createElement('button');
   no.type = 'button';
   no.textContent = 'Decline';
   no.addEventListener('click', async () => {
-    await supabase.rpc('decline_live_match', { p_id: inv.id });
+    await supabase.rpc(isGroup ? 'decline_group_match' : 'decline_live_match', { p_id: inv.id });
     hideInvite();
   });
   row.append(join, no);
