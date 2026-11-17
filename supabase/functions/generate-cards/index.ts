@@ -34,9 +34,9 @@ class SafeError extends Error {
   }
 }
 
-const MAX_TEXT = 12000;
+const MAX_TEXT = 30000;                 // about 30 pages of notes
 const MAX_TOPIC = 300;
-const MAX_PAGES = 10;                    // scanned pages per request
+const MAX_PAGES = 10;                    // scanned pages per request (the page sends 30 pages as 3 requests)
 const MAX_IMAGE_CHARS = 3_000_000;       // about 2.2 MB per page image (base64)
 const MAX_TOTAL_CHARS = 14_000_000;      // about 10 MB for all pages together
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
@@ -149,7 +149,7 @@ async function askAI(system: string, user: string, images: Img[] = [], wantJson 
       headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
         model: Deno.env.get('CLAUDE_MODEL') ?? 'claude-haiku-5-5',
-        max_tokens: 3000,
+        max_tokens: wantJson ? 3000 : 8000,   // reading 10 dense pages can be long
         system,
         messages: [{
           role: 'user',

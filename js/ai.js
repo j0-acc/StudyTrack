@@ -35,7 +35,16 @@ export async function generateCards({ mode, input, count }) {
 }
 
 // Reads the text on scanned PDF pages. images: [{ mime, data (base64) }]. Returns the text.
-export async function readScannedPages(images) {
-  const data = await callAI({ mode: 'read', images: images.map(({ mime, data: d }) => ({ mime, data: d })) });
-  return String((data && data.text) || '').trim();
+// The AI reads at most 10 pages per request, so longer scans are sent in groups of 10
+// (each group counts as one AI use). onProgress(done, total) is called after each group.
+export async function readScannedPages(images, onProgress) {
+  const BATCH = 10;
+  const parts = [];
+  for (let i = 0; i < images.length; i += BATCH) {
+    const group = images.slice(i, i + BATCH).map(({ mime, data: d }) => ({ mime, data: d }));
+    const data = await callAI({ mode: 'read', images: group });
+    parts.push(String((data && data.text) || '').trim());
+    if (onProgress) onProgress(Math.min(i + BATCH, images.length), images.length);
+  }
+  return parts.filter(Boolean).join('\n\n');
 }

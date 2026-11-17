@@ -47,7 +47,16 @@
           </a>
         </div>
 
-        <h2 class="section-label">Cards</h2>
+        <div class="cards-head">
+          <h2 class="section-label">Cards</h2>
+          <button type="button" class="btn-text" id="select-btn" hidden>Select</button>
+        </div>
+        <div class="select-bar" id="select-bar" hidden>
+          <label class="select-all"><input type="checkbox" id="select-all"> All</label>
+          <span id="select-count" aria-live="polite">0 selected</span>
+          <button type="button" class="btn btn-danger" id="delete-selected" disabled>Delete</button>
+          <button type="button" class="btn-text" id="select-cancel">Cancel</button>
+        </div>
         <ol class="card-list" id="card-list"></ol>
 
         <section class="card ai-card" id="ai-section" aria-labelledby="ai-title">

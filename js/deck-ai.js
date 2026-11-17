@@ -6,11 +6,11 @@ import {
   savePendingScan, getPendingScan, clearPendingScan,
 } from './offline.js';
 
-const MAX_TEXT = 12000;
+const MAX_TEXT = 30000;   // about 30 pages of notes
 const MAX_TOPIC = 300;
 const MAX_PDF_PAGES = 40;
 const MAX_FILE_MB = 50;   // biggest file the page will try to read
-const MAX_SCANS = 10;     // scanned pages (pictures of text) sent to the AI per import
+const MAX_SCANS = 30;     // scanned pages (pictures of text) read by the AI per import (sent 10 at a time)
 const SCAN_WIDTH = 1400;  // page picture width in pixels: sharp enough to read, small enough to send
 // the Android app carries its own copy of the PDF reader (js/vendor), so PDFs can be read offline
 const PDFJS = isApp() ? './vendor/pdf.min.mjs' : 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.mjs';
@@ -90,7 +90,9 @@ export function setupAI({ supabase, deckId, getCardCount, reload }) {
           if (!isOffline()) {
             say(`Reading ${pageWord} with AI... this can take a few seconds.`);
             try {
-              read = await readScannedPages(result.scans);
+              read = await readScannedPages(result.scans, (done, total) => {
+                if (total > 10) say(`Reading scanned pages with AI... ${done} of ${total} done.`);
+              });
             } catch (err) {
               if (!isNetworkError(err)) throw err;
             }
@@ -295,7 +297,9 @@ export function setupAI({ supabase, deckId, getCardCount, reload }) {
       go.disabled = true;
       say(`Reading ${pages} with AI... this can take a few seconds.`);
       try {
-        const read = await readScannedPages(scan.images);
+        const read = await readScannedPages(scan.images, (done, total) => {
+          if (total > 10) say(`Reading scanned pages with AI... ${done} of ${total} done.`);
+        });
         // text from the normal pages: what was saved with the scan, or what was typed/kept offline since
         const waiting = getPendingAI(account(), deckId);
         const base = (waiting && waiting.input) || scan.text || '';

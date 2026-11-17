@@ -52,3 +52,23 @@ a.mode:hover { transform: translateY(-2px); }
 @media (max-width: 700px) {
   .mode-grid, .two-col { grid-template-columns: 1fr; }
 }
+
+/* selecting several cards to delete at once */
+.cards-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.cards-head .btn-text { color: var(--blue); font-weight: 600; }
+.select-bar {
+  position: sticky; top: 0.5rem; z-index: 5;
+  display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+  background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow);
+  padding: 0.55rem 0.9rem; margin-bottom: 0.75rem;
+}
+.select-bar .select-all { display: flex; align-items: center; gap: 0.4rem; font-weight: 600; font-size: var(--fs-small); cursor: pointer; }
+.select-bar #select-count { flex: 1; font-size: var(--fs-small); color: var(--ink-soft); }
+.select-bar .btn-danger { width: auto; margin: 0; padding: 0.5rem 1rem; font-size: var(--fs-small); background: #e04b3d; border: 1px solid #e04b3d; color: #fff; border-radius: 999px; font-weight: 600; cursor: pointer; }
+.select-bar .btn-danger:disabled { opacity: 0.45; cursor: default; }
+.select-bar input, .card-check { width: 18px; height: 18px; accent-color: var(--orange); flex: none; margin: 0; }
+.card-list.selecting .card-item { justify-content: flex-start; cursor: pointer; }
+.card-item.picked { outline: 2px solid var(--orange); background: #fff7ec; }
+.cards-head .btn-text, .select-bar .btn-text { background: none; border: 0; font: 600 var(--fs-small) var(--font); cursor: pointer; padding: 0.5rem; }
+.select-bar .btn-text { color: var(--ink-soft); }
+.select-bar[hidden], .cards-head .btn-text[hidden] { display: none; }

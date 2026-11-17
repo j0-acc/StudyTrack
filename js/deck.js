@@ -12,6 +12,8 @@ if (user) start();
 const COLORS = ['#FF9D2E', '#2F9BF0', '#2FBF71', '#B9A7F0', '#FF8FB1'];
 let deck = null;
 let cards = [];
+let selecting = false;          // multi-delete mode
+const picked = new Set();     // ids of the cards ticked for deleting
 
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
@@ -101,6 +103,13 @@ function renderModes() {
 function renderCards() {
   const list = document.getElementById('card-list');
   list.innerHTML = '';
+  // forget ticks for cards that no longer exist
+  [...picked].forEach((id) => { if (!cards.some((c) => c.id === id)) picked.delete(id); });
+  if (cards.length === 0) selecting = false;
+  document.getElementById('select-btn').hidden = cards.length < 2 || selecting;
+  document.getElementById('select-bar').hidden = !selecting;
+  list.classList.toggle('selecting', selecting);
+  updateSelectBar();
 
   if (cards.length === 0) {
     list.innerHTML = '<li class="empty">No cards yet. Add your first card below.</li>';
@@ -109,7 +118,23 @@ function renderCards() {
 
   cards.forEach((c, i) => {
     const li = document.createElement('li');
-    li.className = 'card-item';
+    li.className = 'card-item' + (picked.has(c.id) ? ' picked' : '');
+
+    if (selecting) {
+      const box = document.createElement('input');
+      box.type = 'checkbox';
+      box.className = 'card-check';
+      box.checked = picked.has(c.id);
+      box.setAttribute('aria-label', `Select card ${i + 1}: ${c.front_text}`);
+      box.addEventListener('change', () => togglePick(c.id, box.checked, li));
+      li.appendChild(box);
+      // tapping anywhere on the card ticks it too
+      li.addEventListener('click', (e) => {
+        if (e.target === box) return;
+        box.checked = !box.checked;
+        togglePick(c.id, box.checked, li);
+      });
+    }
 
     const text = document.createElement('div');
     const front = document.createElement('strong');
@@ -127,9 +152,69 @@ function renderCards() {
     del.innerHTML = '&times;';
     del.addEventListener('click', () => deleteCard(c.id));
 
-    li.append(text, del);
+    li.append(text);
+    if (!selecting) li.append(del);
     list.appendChild(li);
   });
+}
+
+// ---------- selecting several cards to delete at once ----------
+function togglePick(id, on, li) {
+  if (on) picked.add(id); else picked.delete(id);
+  li.classList.toggle('picked', on);
+  updateSelectBar();
+}
+
+function updateSelectBar() {
+  const n = picked.size;
+  document.getElementById('select-count').textContent = `${n} selected`;
+  const del = document.getElementById('delete-selected');
+  del.disabled = n === 0;
+  del.textContent = n ? `Delete ${plural(n, 'card')}` : 'Delete';
+  const all = document.getElementById('select-all');
+  all.checked = n > 0 && n === cards.length;
+  all.indeterminate = n > 0 && n < cards.length;
+}
+
+function setSelecting(on) {
+  selecting = on;
+  picked.clear();
+  renderCards();
+  if (on) document.getElementById('select-all').focus();
+}
+
+async function deleteSelected() {
+  const ids = [...picked];
+  if (!ids.length) return;
+  const all = ids.length === cards.length;
+  const ask = all
+    ? `Delete all ${plural(ids.length, 'card')} in this deck? This can't be undone.`
+    : `Delete ${plural(ids.length, 'card')}? This can't be undone.`;
+  if (!window.confirm(ask)) return;
+  const btn = document.getElementById('delete-selected');
+  btn.disabled = true;
+  btn.textContent = 'Deleting...';
+  const { error } = await supabase.from('cards').delete().in('id', ids).eq('deck_id', deckId);
+  if (error) {
+    window.alert(error.message);
+    updateSelectBar();
+    return;
+  }
+  selecting = false;
+  picked.clear();
+  await loadCards();
+}
+
+function wireSelect() {
+  document.getElementById('select-btn').addEventListener('click', () => setSelecting(true));
+  document.getElementById('select-cancel').addEventListener('click', () => setSelecting(false));
+  document.getElementById('delete-selected').addEventListener('click', deleteSelected);
+  document.getElementById('select-all').addEventListener('change', (e) => {
+    picked.clear();
+    if (e.target.checked) cards.forEach((c) => picked.add(c.id));
+    renderCards();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && selecting) setSelecting(false); });
 }
 
 async function deleteCard(id) {
@@ -249,6 +334,7 @@ async function deleteDeck() {
 
 function wireEvents() {
   document.getElementById('card-form').addEventListener('submit', addCard);
+  wireSelect();
   document.getElementById('edit-btn').addEventListener('click', openEdit);
   document.getElementById('edit-close').addEventListener('click', () => editModal.close());
   editModal.addEventListener('click', (e) => { if (e.target === editModal) editModal.close(); });
