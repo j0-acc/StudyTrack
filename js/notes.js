@@ -1,4 +1,5 @@
 import { supabase } from './supabase.js';
+import { paintTint } from './colors.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
 import { isOffline, isNetworkError, queueNoteSave, queueNoteDelete, withPendingNotes } from './offline.js';
 import { askConfirm } from './dialog.js';
@@ -157,7 +158,7 @@ function noteCard(n) {
   const chip = document.createElement('span');
   chip.className = 'note-chip';
   chip.textContent = deck ? deck.title : 'Others';
-  chip.style.background = deck ? deck.color_tag + '40' : '#ece8df';
+  if (deck) paintTint(chip, deck.color_tag, '40'); else chip.style.background = '#ece8df';
   const date = document.createElement('span');
   date.className = 'note-date';
   date.textContent = new Date(n.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })

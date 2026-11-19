@@ -1,4 +1,5 @@
 import { supabase } from './supabase.js';
+import { paintTint } from './colors.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
 
 const user = await requireUser();
@@ -56,7 +57,7 @@ async function start() {
 
   $('study-area').hidden = false;
   $('deck-chip').textContent = deck.title;
-  $('deck-chip').style.background = deck.color_tag + '40';
+  paintTint($('deck-chip'), deck.color_tag, '40');
   $('back-link').href = `deck.html?id=${deckId}`;
   $('back-deck').href = `deck.html?id=${deckId}`;
 

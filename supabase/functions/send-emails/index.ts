@@ -106,7 +106,7 @@ function buildEmail(row: Row): { subject: string; html: string; text: string } |
       heading: 'Your request was approved',
       lines: [
         `Your StudyTrack account will be permanently deleted on ${date}.`,
-        'Until then you can change your mind: log in and choose "Restore my account" to keep everything.',
+        'Changed your mind? Just log in again before that date and your account is restored automatically, with everything kept.',
         noteLine,
       ],
     },

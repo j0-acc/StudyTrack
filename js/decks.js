@@ -1,15 +1,13 @@
 import { supabase } from './supabase.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
 
-// a deck colour from the database is only used if it is a real #RRGGBB colour
-const safeColor = (c) => (/^#[0-9a-f]{6}$/i.test(c || '') ? c : '#FF9D2E');
+import { NO_COLOR, paintTint, barColor, buildSwatches as drawSwatches, pickedColor } from './colors.js';
 
 const user = await requireUser();
 if (user) start();
 
 // A deck counts as "Mastered" at or above this percentage (group decided: 100)
 const MASTERED_AT = 100;
-const COLORS = ['#FF9D2E', '#2F9BF0', '#2FBF71', '#B9A7F0', '#FF8FB1'];
 
 let allDecks = [];
 let filter = 'all';
@@ -65,7 +63,7 @@ function render() {
     const a = document.createElement('a');
     a.className = 'deck-card';
     a.href = `deck.html?id=${d.id}`;
-    a.style.background = safeColor(d.color_tag) + '33';
+    paintTint(a, d.color_tag, '33');
 
     const title = document.createElement('h2');
     title.textContent = d.title;
@@ -78,7 +76,7 @@ function render() {
     bar.className = 'bar';
     const fill = document.createElement('span');
     fill.style.width = `${Number(d.mastery) || 0}%`;
-    fill.style.background = safeColor(d.color_tag);
+    fill.style.background = barColor(d.color_tag);
     bar.appendChild(fill);
 
     const meta = document.createElement('small');
@@ -117,32 +115,13 @@ function wireEvents() {
 }
 
 // ---------- Add Deck popup ----------
-function swatchInput(color, checked) {
-  const input = document.createElement('input');
-  input.type = 'radio';
-  input.name = 'color';
-  input.value = color;
-  input.checked = checked;
-  return input;
-}
-function swatchDot(color) {
-  const dot = document.createElement('span');
-  dot.style.background = color;
-  dot.title = color;
-  return dot;
-}
 function buildSwatches() {
-  const box = document.getElementById('swatches');
-  COLORS.forEach((color, i) => {
-    const label = document.createElement('label');
-    label.className = 'swatch';
-    label.append(swatchInput(color, i === 0), swatchDot(color));
-    box.appendChild(label);
-  });
+  drawSwatches(document.getElementById('swatches'), NO_COLOR);   // new decks start with no colour
 }
 
 function openModal() {
   form.reset();
+  buildSwatches();
   message.textContent = '';
   modal.showModal();
   document.getElementById('deck-title').focus();
@@ -152,7 +131,7 @@ async function createDeck(e) {
   e.preventDefault();
   const title = document.getElementById('deck-title').value.trim();
   const description = document.getElementById('deck-desc').value.trim();
-  const color = form.elements.color.value;
+  const color = pickedColor(form);
 
   if (!title) {
     message.className = 'auth-message error';

@@ -1,4 +1,5 @@
 import { supabase } from './supabase.js';
+import { paintTint } from './colors.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
 
 const user = await requireUser();
@@ -99,7 +100,7 @@ async function loadSubjects() {
     const chip = document.createElement('span');
     chip.className = 'chip';
     chip.textContent = d.title;
-    chip.style.background = d.color_tag + '55'; // adds transparency to the deck color
+    paintTint(chip, d.color_tag, '55'); // light version of the deck colour (white decks get a border)
     chips.appendChild(chip);
   });
   const add = document.createElement('a');

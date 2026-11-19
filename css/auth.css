@@ -68,3 +68,8 @@
   .auth-switch a, .forgot-row a, .link-btn { display: inline-block; padding: 0.55rem 0.25rem; }
   .field input { min-height: 44px; }
 }
+
+/* "Welcome back" page after logging in again cancels a deletion (restore.html) */
+.restore-form { text-align: center; display: flex; flex-direction: column; justify-content: center; }
+.restore-icon { width: 3.5rem; height: 3.5rem; margin: 0 auto 1rem; border-radius: 50%; display: grid; place-items: center; background: #e3f6ea; color: #1f7a45; font-size: 1.6rem; font-weight: 700; }
+.restore-form .btn-block { display: flex; justify-content: center; width: 100%; margin-top: 1.25rem; text-decoration: none; }

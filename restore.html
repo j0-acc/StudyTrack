@@ -3,25 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Restore your account — Student StudyTrack</title>
+  <title>Welcome back — Student StudyTrack</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/auth.css">
-  <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
-  <main class="restore-wrap">
-    <section class="restore-card" aria-labelledby="restore-title">
-      <h1 id="restore-title">Your account is scheduled for deletion</h1>
-      <p>An administrator approved your deletion request. Your account and everything in it will be permanently deleted on:</p>
-      <span class="date" id="delete-date"></span>
-      <p>Changed your mind? Restore your account now and nothing will be lost.</p>
-      <button type="button" class="btn btn-primary" id="restore-btn">Restore my account</button>
-      <button type="button" class="btn" id="signout-btn">Sign out</button>
-      <p class="auth-message" id="restore-message" role="status" aria-live="polite"></p>
-    </section>
+  <main class="auth-page">
+    <div class="auth-card">
+      <aside class="auth-side">
+        <img src="assets/hero.png" alt="">
+        <h2>Study smarter. Remember more.</h2>
+        <p>Your AI study companion — flashcards, quizzes, and notes in one place.</p>
+      </aside>
+
+      <section class="auth-form restore-form" aria-labelledby="restore-title">
+        <div class="restore-icon" aria-hidden="true">✓</div>
+        <h1 id="restore-title">Welcome back!</h1>
+        <p class="auth-sub" id="restore-text">Your account deletion was cancelled because you logged in again. Your decks, cards, notes and progress are all still here.</p>
+        <a class="btn btn-primary btn-block" href="dashboard.html" id="restore-go">Go to my dashboard</a>
+        <p class="auth-message" id="restore-message" role="status" aria-live="polite"></p>
+      </section>
+    </div>
   </main>
   <script type="module" src="js/restore.js"></script>
 </body>

@@ -11,11 +11,11 @@ function show(text, type) {
 }
 
 // Administrators go straight to the admin dashboard, everyone else to the Dashboard.
-// An account in its 30-day deletion recovery period goes to the restore page.
+// A student who asked to delete their account is restored by logging in again (welcome-back page).
 const ADMIN_TEXT = 'Administrator accounts use the StudyTrack website. Please sign in there to open the Admin Panel.';
 const SUSPENDED_TEXT = 'This account has been suspended by an administrator. Contact StudyTrack support if you think this is a mistake.';
 
-async function goHome() {
+async function goHome(fresh = false) {
   const { data } = await supabase.rpc('my_account_state');
   if (data && data.suspended) {
     await supabase.auth.signOut();
@@ -27,7 +27,23 @@ async function goHome() {
     submitBtn.disabled = false;
     return show(ADMIN_TEXT, 'error');
   }
-  if (data && data.deletion_status === 'approved') window.location.href = 'restore.html';
+  if (data && (data.deletion_status === 'pending' || data.deletion_status === 'approved')) {
+    if (!fresh) {
+      // an old session from before the deletion request: sign it out and ask for a real login
+      await supabase.auth.signOut({ scope: 'local' });
+      submitBtn.disabled = false;
+      return show(DELETED_TEXT, 'error');
+    }
+    // they logged in again: that cancels the deletion
+    const res = await supabase.rpc('restore_account_on_login');
+    if (res.error) {
+      await supabase.auth.signOut({ scope: 'local' });
+      submitBtn.disabled = false;
+      return show('Could not restore your account. Please try again.', 'error');
+    }
+    window.location.href = 'restore.html';
+    return;
+  }
   else if (data && data.is_admin) window.location.href = 'admin.html';
   else window.location.href = 'dashboard.html';
 }
@@ -35,6 +51,8 @@ async function goHome() {
 // Sent here after being suspended while logged in
 if (new URLSearchParams(window.location.search).get('suspended') === '1') show(SUSPENDED_TEXT, 'error');
 if (new URLSearchParams(window.location.search).get('admin') === '1') show(ADMIN_TEXT, 'error');
+const DELETED_TEXT = 'Your account deletion request was sent, so you were signed out. Changed your mind? Log in again before your account is deleted and it will be restored.';
+if (new URLSearchParams(window.location.search).get('deleted') === '1') show(DELETED_TEXT, 'ok');
 if (new URLSearchParams(window.location.search).get('expired') === '1') show('Your login ended, so you were signed out. Please log in again.', 'error');
 
 // If the user is already logged in, skip this page
@@ -118,5 +136,5 @@ form.addEventListener('submit', async (e) => {
     return show(error.message, 'error');
   }
 
-  await goHome();
+  await goHome(true); // a real password login
 });

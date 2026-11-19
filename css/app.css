@@ -150,3 +150,9 @@ dialog.st-confirm p { margin: 0 0 1.1rem; font-size: var(--fs-small); color: var
 .st-btn-danger:hover { background: #c83c2f; }
 @media (prefers-reduced-motion: reduce) { dialog.st-confirm[open] { animation: none; } }
 .st-confirm-actions .btn-grey { background: #eef0f3; border: 1px solid #eef0f3; color: var(--ink); }
+
+/* decks with "No colour" are white with a thin border */
+.plain-deck { box-shadow: inset 0 0 0 1.5px var(--line, #ece3d4); }
+.swatch-none span { box-shadow: inset 0 0 0 1.5px #cfc8bb; position: relative; }
+.swatch-none span::after { content: ""; position: absolute; left: 50%; top: 4px; bottom: 4px; width: 2px; background: #d9534f; transform: translateX(-50%) rotate(45deg); border-radius: 2px; }
+.plain-deck .bar { background: #eef0f3; }

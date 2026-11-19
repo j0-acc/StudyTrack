@@ -178,7 +178,9 @@ async function requestDeletion() {
     $('delete-go').disabled = false;
     return say('delete-message', error.message || 'Could not send the request.', 'error');
   }
-  window.location.reload(); // the banner "waiting for approval" now appears
+  // signed out right away; logging in again before the deletion date cancels it
+  await supabase.auth.signOut({ scope: 'local' });
+  window.location.href = 'login.html?deleted=1';
 }
 
 // ---------- events ----------

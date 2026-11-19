@@ -1,6 +1,7 @@
 import { supabase } from './supabase.js';
 import { requireUser, loadProfile, renderNav } from './layout.js';
 import { askConfirm } from './dialog.js';
+import { pickDistractors, cleanOption } from './choices.js';
 
 const user = await requireUser();
 const deckId = new URLSearchParams(window.location.search).get('id');
@@ -195,17 +196,10 @@ function makeQuestion(type, card) {
   }
 
   if (type === 'multiple_choice') {
-    const seen = new Set([card.back_text.trim().toLowerCase()]);
-    const distractors = [];
-    shuffle(others).forEach((c) => {
-      const key = c.back_text.trim().toLowerCase();
-      if (distractors.length < 3 && !seen.has(key)) {
-        seen.add(key);
-        distractors.push(c.back_text);
-      }
-    });
+    // wrong options that look like the right one (similar length and style), all tidied the same way
+    const distractors = pickDistractors(card.back_text, others.map((c) => c.back_text), 3);
     const options = shuffle([
-      { text: card.back_text, is_correct: true },
+      { text: cleanOption(card.back_text), is_correct: true },
       ...distractors.map((text) => ({ text, is_correct: false })),
     ]);
     return { ...base, question_text: card.front_text, options };
@@ -214,7 +208,8 @@ function makeQuestion(type, card) {
   // true / false: half the statements pair the question with its own answer, half with another card's answer
   const different = others.filter((c) => c.back_text.trim().toLowerCase() !== card.back_text.trim().toLowerCase());
   const makeFalse = different.length > 0 && Math.random() < 0.5;
-  const shown = makeFalse ? shuffle(different)[0].back_text : card.back_text;
+  // a "False" statement uses an answer that looks like the real one, so it isn't obvious
+  const shown = makeFalse ? pickDistractors(card.back_text, different.map((c) => c.back_text), 1)[0] : card.back_text;
   const answer = makeFalse ? 'False' : 'True';
   return {
     ...base,

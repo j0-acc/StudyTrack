@@ -42,8 +42,11 @@ export async function requireUser(options = {}) {
     return null;
   }
 
-  if (accountState.deletion_status === 'approved' && !options.allowScheduled) {
-    window.location.href = 'restore.html';
+  // the student asked to delete their account: they stay signed out until they log in again,
+  // and that new login cancels the deletion (login.js → restore_account_on_login)
+  if (accountState.deletion_status === 'pending' || accountState.deletion_status === 'approved') {
+    await supabase.auth.signOut({ scope: 'local' });
+    window.location.href = 'login.html?deleted=1';
     return null;
   }
 

@@ -97,6 +97,13 @@ app/                   Capacitor project: scripts/build-web.mjs copies the websi
   (`consume_ai_quota`, AI_DAILY_LIMIT, default 20). `{mode:'read', images}` reads scanned PDF pages
   (max 10 per request, one quota each; deck-ai.js sends up to 30 per import in groups of 10).
   Text limit is 30,000 characters (MAX_TEXT in deck-ai.js and the function).
+- Deck colours live in js/colors.js. '#FFFFFF' = "No colour" (white card with a border, `.plain-deck`); it is
+  the default for new decks. Use `paintTint()` / `barColor()` instead of adding alpha to colour_tag by hand.
+- Account deletion: requesting it signs the student out (settings.js). Any open session with a pending/approved
+  request is signed out by `requireUser()`. Logging in again with the password calls
+  `restore_account_on_login()` (database/21) and shows restore.html ("Welcome back"). Audit label "Kept by login".
+- Multiple choice wrong options look like the right answer (similar length/words/style): js/choices.js for the
+  quiz page, `mc_distractors()` in database/22 for challenges, live and group matches. Keep the two in step.
 - No browser `confirm()`/`alert()` on student pages: use `askConfirm({title,text,ok,danger})` / `showMessage()`
   from js/dialog.js (styled in app.css). The admin panel has its own confirm popup in admin-layout.js.
 - Deck page: **Select** turns on multi-delete (checkboxes, Select all, one `delete().in('id', ids)`).

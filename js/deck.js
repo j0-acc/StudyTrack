@@ -4,13 +4,12 @@ import { setupAI } from './deck-ai.js';
 import { askConfirm, showMessage } from './dialog.js';
 
 // a deck colour from the database is only used if it is a real #RRGGBB colour
-const safeColor = (c) => (/^#[0-9a-f]{6}$/i.test(c || '') ? c : '#FF9D2E');
+import { paintTint, buildSwatches, pickedColor } from './colors.js';
 
 const user = await requireUser();
 const deckId = new URLSearchParams(window.location.search).get('id');
 if (user) start();
 
-const COLORS = ['#FF9D2E', '#2F9BF0', '#2FBF71', '#B9A7F0', '#FF8FB1'];
 let deck = null;
 let cards = [];
 let selecting = false;          // multi-delete mode
@@ -56,7 +55,7 @@ function renderHeader() {
   document.title = `${deck.title} — Student StudyTrack`;
   const chip = document.getElementById('deck-chip');
   chip.textContent = deck.title;
-  chip.style.background = safeColor(deck.color_tag) + '40';
+  paintTint(chip, deck.color_tag, '40');
   document.getElementById('deck-desc').textContent = deck.description || '';
 }
 
@@ -270,23 +269,7 @@ const editMessage = document.getElementById('edit-message');
 function openEdit() {
   document.getElementById('edit-name').value = deck.title;
   document.getElementById('edit-desc').value = deck.description || '';
-  const box = document.getElementById('edit-swatches');
-  box.innerHTML = '';
-  const current = safeColor(deck.color_tag);
-  const colors = COLORS.includes(current) ? COLORS : [current, ...COLORS];
-  colors.forEach((color) => {
-    const label = document.createElement('label');
-    label.className = 'swatch';
-    const input = document.createElement('input');
-    input.type = 'radio';
-    input.name = 'color';
-    input.value = color;
-    input.checked = color === current;
-    const dot = document.createElement('span');
-    dot.style.background = color;
-    label.append(input, dot);
-    box.appendChild(label);
-  });
+  buildSwatches(document.getElementById('edit-swatches'), deck.color_tag);
   editMessage.textContent = '';
   editModal.showModal();
 }
@@ -295,7 +278,7 @@ async function saveEdit(e) {
   e.preventDefault();
   const title = document.getElementById('edit-name').value.trim();
   const description = document.getElementById('edit-desc').value.trim();
-  const color = editForm.elements.color.value;
+  const color = pickedColor(editForm);
   const btn = document.getElementById('edit-submit');
 
   if (!title) {

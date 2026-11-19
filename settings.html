@@ -113,18 +113,19 @@
       <h2 id="delete-title">Request account deletion?</h2>
       <button type="button" class="modal-close" id="delete-close" aria-label="Close">&times;</button>
     </div>
-    <p class="pick-note" style="margin-bottom:0.5rem">An administrator must approve your request. After approval your account is kept for <strong>30 days</strong> so you can restore it, and then it is permanently deleted, including:</p>
+    <p class="pick-note" style="margin-bottom:0.5rem">You will be <strong>signed out right away</strong>. An administrator then reviews your request. After approval your account is kept for <strong>30 days</strong>, and then it is permanently deleted, including:</p>
     <ul class="warn-list">
       <li>Your profile and photo</li>
       <li>All your decks, cards, notes, and quizzes</li>
       <li>Your streak, study time, goals, and statistics</li>
     </ul>
+    <p class="pick-note">Changed your mind? Just <strong>log in again</strong> before the deletion date and your account is restored.</p>
     <div class="field">
       <label for="delete-reason">Reason (optional)</label>
       <textarea id="delete-reason" maxlength="500" placeholder="Tell us why you want to leave"></textarea>
     </div>
     <p class="auth-message" id="delete-message" role="status" aria-live="polite"></p>
-    <button type="button" class="btn btn-danger" id="delete-go">Send deletion request</button>
+    <button type="button" class="btn btn-danger" id="delete-go">Send request and sign out</button>
   </dialog>
 
   <script type="module" src="js/settings.js"></script>
