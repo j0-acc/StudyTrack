@@ -1,4 +1,4 @@
-# StudyTrack — project guide for Claude Code
+# StudyTrack 
 
 **Student StudyTrack** is an AI study app: decks of flashcards, quizzes, notes, study statistics,
 friends and challenges (sent and live), an admin panel, and an Android app.
